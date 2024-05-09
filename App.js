@@ -6,29 +6,14 @@ import InboxScreen from './screens/inboxScreen';
 import ProfileScreen from './screens/profileScreen';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { StyleSheet, View, Text } from 'react-native';
-import { useFonts } from 'expo-font';
-import * as Font from 'expo-font';
 
 const globalStyles = require('./globalStyles.json');
 const Tab = createBottomTabNavigator();
 
 export default function App() {
 
-  const [fontLoaded, setFontLoaded] = React.useState(false)
-
-  React.useEffect(() => {
-    Font.loadAsync({
-      "Itim": require("./assets/Itim.ttf"),
-    })
-    .then(() => {
-     setFontLoaded(true)
-    }) 
-  }, [])
-
-  if (!fontLoaded) return null
-
   return (
-    <NavigationContainer>
+    <NavigationContainer style={styles.container}>
       <Tab.Navigator
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
@@ -42,14 +27,14 @@ export default function App() {
             }
             return <Icon name={iconName} size={globalStyles.bottomBarIconSize} color={focused ? globalStyles.activePrimaryColor : globalStyles.inactivePrimaryColor} />;
           },
-          tabBarActiveTintColor: globalStyles.activePrimaryColor,
-          tabBarInactiveTintColor: globalStyles.inactivePrimaryColor,
+          tabBarActiveTintColor: globalStyles.primaryRedColor,
+          tabBarInactiveTintColor: globalStyles.primaryRedColor,
           tabBarStyle: {
-            backgroundColor: globalStyles.backgroundColor,
+            backgroundColor: globalStyles.bottomBarBackgroundColor,
             position: 'absolute',
             bottom: 20,
-            left: 20,
-            right: 20,
+            left: 110,
+            right: 110,
             elevation: 0,
             borderRadius: 40,
             height: 60,
@@ -59,6 +44,14 @@ export default function App() {
           tabBarLabelStyle: {
             display: 'none',
           },
+          headerStyle: {
+            backgroundColor: globalStyles.primaryRedColor,
+            height: 100,
+          },
+          headerTitleStyle: {
+            color: 'white', 
+          },
+          headerTitle: (props) => <Text {...props} style={styles.header}>FitFeed</Text>, 
         })}
       >
 
@@ -70,3 +63,14 @@ export default function App() {
   );
 }
 
+const styles = StyleSheet.create({
+  container:{
+    backgroundColor: globalStyles.bottomBarBackgroundColor
+  },
+  header:{
+    color: globalStyles.headerColor,
+    fontSize: globalStyles.headerSize,
+    fontWeight: 'bold',
+    textAlign: 'right',
+  }
+});
