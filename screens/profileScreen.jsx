@@ -3,6 +3,8 @@ import { Button, View, Text, StyleSheet } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ProfileHeader from '../components/profileHeader';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
 //Screens
 import { PostsTab } from './postsTab';
 import { StatsTab } from './statsTab';
@@ -13,7 +15,7 @@ const Tab = createMaterialTopTabNavigator();
 
 const ProfileScreen = () => {
     return (
-        <View>
+        <SafeAreaView style={styles.container}>
             <ProfileHeader/>
             <Tab.Navigator
                 screenOptions={({ route }) => ({
@@ -45,13 +47,13 @@ const ProfileScreen = () => {
                 <Tab.Screen name="PostsTab" component={PostsTab} />
                 <Tab.Screen name="StatsTab" component={StatsTab} />
             </Tab.Navigator>
-        </View>
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: globalStyles.backgroundColor
+        flex: 1,
     },
     header: {
         color: globalStyles.headerColor,

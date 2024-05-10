@@ -28,6 +28,7 @@
       "eas": {
         "projectId": "7d83e923-f275-42fe-b81b-741c113cb534"
       }
-    }
+    },
+    "scheme": "com.citricmelon.fitfeed"
   }
 }
