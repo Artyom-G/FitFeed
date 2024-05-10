@@ -2,11 +2,11 @@ import * as React from 'react';
 import { Button, View, Text, StyleSheet } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { ProfileHeader } from '../components/profileHeader';
+import ProfileHeader from '../components/profileHeader';
 //Screens
-import HomeScreen from './homeScreen';
-import InboxScreen from './inboxScreen';
-import GoogleOAuth from '../components/googleOAuth';
+import { PostsTab } from './postsTab';
+import { StatsTab } from './statsTab';
+
 
 const globalStyles = require('../globalStyles.json');
 const Tab = createMaterialTopTabNavigator();
@@ -14,40 +14,36 @@ const Tab = createMaterialTopTabNavigator();
 const ProfileScreen = () => {
     return (
         <View>
-            <GoogleOAuth></GoogleOAuth>
+            <ProfileHeader/>
             <Tab.Navigator
                 screenOptions={({ route }) => ({
                     tabBarIcon: ({ focused, color, size }) => {
                         let iconName;
-                        if (route.name === 'HomeScreen') {
-                            iconName = 'home';
-                        } else if (route.name === 'InboxScreen') {
-                            iconName = 'inbox';
-                        } else if (route.name === 'ProfileScreen') {
-                            iconName = 'user';
+                        if (route.name === 'PostsTab') {
+                            iconName = 'th-large';
+                        } else if (route.name === 'StatsTab') {
+                            iconName = 'server';
                         }
                         return <Icon name={iconName} size={globalStyles.bottomBarIconSize} color={focused ? globalStyles.activePrimaryColor : globalStyles.inactivePrimaryColor} />;
                     },
-                    tabBarActiveTintColor: globalStyles.primaryRedColor,
-                    tabBarInactiveTintColor: globalStyles.primaryRedColor,
+                    tabBarActiveTintColor: globalStyles.activePrimaryColor,
+                    tabBarInactiveTintColor: globalStyles.inactivePrimaryColor,
                     tabBarStyle: {
-                        backgroundColor: globalStyles.bottomBarBackgroundColor,
+                        backgroundColor: globalStyles.backgroundColor,
                     },
                     tabBarLabelStyle: {
                         display: 'none',
                     },
-                    headerStyle: {
-                        backgroundColor: globalStyles.primaryRedColor,
-                        height: 100,
+                    tabBarAndroidRipple: true,
+                    tabBarPressColor: globalStyles.activePrimaryColor,
+                    tabBarPressColor: globalStyles.activePrimaryColor,
+                    tabBarIndicatorStyle: {
+                        backgroundColor: globalStyles.activePrimaryColor,
                     },
-                    headerTitleStyle: {
-                        color: 'white',
-                    },
-                    headerTitle: (props) => <Text {...props} style={styles.header}>FitFeed</Text>,
                 })}
             >
-                <Tab.Screen name="HomeScreen" component={HomeScreen} />
-                <Tab.Screen name="InboxScreen" component={InboxScreen} />
+                <Tab.Screen name="PostsTab" component={PostsTab} />
+                <Tab.Screen name="StatsTab" component={StatsTab} />
             </Tab.Navigator>
         </View>
     );
@@ -55,7 +51,7 @@ const ProfileScreen = () => {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: globalStyles.bottomBarBackgroundColor
+        backgroundColor: globalStyles.backgroundColor
     },
     header: {
         color: globalStyles.headerColor,

@@ -19,19 +19,19 @@ export default function App() {
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
-            if (route.name === 'TrackerScreen') {
+            if (route.name === 'Tracker') {
               iconName = 'home';
-            } else if (route.name === 'InboxScreen') {
+            } else if (route.name === 'Inbox') {
               iconName = 'inbox';
-            } else if (route.name === 'ProfileScreen') {
+            } else if (route.name === 'Profile') {
               iconName = 'user';
             }
             return <Icon name={iconName} size={globalStyles.bottomBarIconSize} color={focused ? globalStyles.activePrimaryColor : globalStyles.inactivePrimaryColor} />;
           },
-          tabBarActiveTintColor: globalStyles.primaryRedColor,
-          tabBarInactiveTintColor: globalStyles.primaryRedColor,
+          tabBarActiveTintColor: globalStyles.activePrimaryColor,
+          tabBarInactiveTintColor: globalStyles.inactivePrimaryColor,
           tabBarStyle: {
-            backgroundColor: globalStyles.bottomBarBackgroundColor,
+            backgroundColor: globalStyles.backgroundColor,
             position: 'absolute',
             bottom: 20,
             left: 110,
@@ -46,19 +46,21 @@ export default function App() {
             display: 'none',
           },
           headerStyle: {
-            backgroundColor: globalStyles.primaryRedColor,
-            height: 100,
+            backgroundColor: 'white',
+            height: 60,
           },
           headerTitleStyle: {
             color: 'white', 
+            fontSize: 26
           },
-          headerTitle: (props) => <Text {...props} style={styles.header}>FitFeed</Text>, 
+          tabBarAndroidRipple: true,
+          headerTitle: (props) => <Text {...props} style={styles.header}>{route.name}</Text>, 
         })}
       >
 
-        <Tab.Screen name="TrackerScreen" component={TrackerScreen} />
-        <Tab.Screen name="InboxScreen" component={InboxScreen} />
-        <Tab.Screen name="ProfileScreen" component={ProfileScreen} />
+        <Tab.Screen name="Tracker" component={TrackerScreen} />
+        <Tab.Screen name="Inbox" component={InboxScreen} />
+        <Tab.Screen name="Profile" component={ProfileScreen} />
       </Tab.Navigator>
     </NavigationContainer>
   );
@@ -66,7 +68,7 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container:{
-    backgroundColor: globalStyles.bottomBarBackgroundColor
+    backgroundColor: globalStyles.backgroundColor
   },
   header:{
     color: globalStyles.headerColor,
