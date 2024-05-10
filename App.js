@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from './screens/homeScreen';
 import InboxScreen from './screens/inboxScreen';
 import ProfileScreen from './screens/profileScreen';
+import TrackerScreen from './screens/trackerScreen';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { StyleSheet, View, Text } from 'react-native';
 
@@ -18,7 +19,7 @@ export default function App() {
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
-            if (route.name === 'HomeScreen') {
+            if (route.name === 'TrackerScreen') {
               iconName = 'home';
             } else if (route.name === 'InboxScreen') {
               iconName = 'inbox';
@@ -55,7 +56,7 @@ export default function App() {
         })}
       >
 
-        <Tab.Screen name="HomeScreen" component={HomeScreen} />
+        <Tab.Screen name="TrackerScreen" component={TrackerScreen} />
         <Tab.Screen name="InboxScreen" component={InboxScreen} />
         <Tab.Screen name="ProfileScreen" component={ProfileScreen} />
       </Tab.Navigator>

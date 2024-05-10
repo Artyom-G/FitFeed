@@ -1,2 +1,4 @@
 # FitFeed
-SweatHomie
+PumpHomie
+SweatBro
+FitHub

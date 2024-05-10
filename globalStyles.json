@@ -2,7 +2,10 @@
     "activePrimaryColor": "#de2b28",
     "inactivePrimaryColor": "#9e4741",
     "backgroundColor": "#FEF7FF",
+    "normalTextSize": 18,
+
     "bottomBarIconSize": 26,
-    "iconSizeCourses": 20,
-    "normalTextSize": 18
+
+    "profileMedalIconSize": 14,
+    "profileLogoSize": 80
 }

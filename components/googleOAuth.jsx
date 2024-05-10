@@ -3,6 +3,7 @@ import { Button, View, Text, Image, StyleSheet, TouchableOpacity } from 'react-n
 import * as WebBrowser from "expo-web-browser";
 import * as Google from 'expo-auth-session/providers/google';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const clientIDs = require('../clientIDs.json');
 const globalStyles = require("../globalStyles.json");
@@ -70,15 +71,32 @@ function GoogleOAuth() {
     return (
         signedIn ?
             <View style={styles.container}>
-                <Image source={{ uri: userInfo.picture }} style={styles.image}></Image>
-                <Text style={styles.text}>{userInfo.email}</Text>
-                <TouchableOpacity style={styles.redButton} onPress={() => DeleteUserData()}>
-                    <Text style={styles.buttonText}>Log out</Text>
-                </TouchableOpacity>
+                <View style={styles.bioProfileWrapper}>
+                    <View style={styles.profile}>
+                        <Image source={{ uri: userInfo.picture }} style={styles.image}></Image>
+                        <View style={styles.profileText}>
+                            <Text style={styles.text}>{userInfo.email}</Text>
+                            <Text>Elite Powerlifter</Text>
+                            <View style={styles.profileMedals}>
+                                <Icon name={'star'} size={globalStyles.profileMedalIconSize} color={globalStyles.activePrimaryColor} />
+                                <Icon name={'star'} size={globalStyles.profileMedalIconSize} color={globalStyles.activePrimaryColor} />
+                                <Icon name={'star'} size={globalStyles.profileMedalIconSize} color={globalStyles.activePrimaryColor} />
+                                <Text>+5 more..</Text>
+                            </View>
+                        </View>
+                    </View>
+                    <Text>This Bio is very long lol</Text>
+                    <Text>Bogus Bogus Bogus</Text>
+                    <Text>Bingus Bingus Bingus</Text>
+                    <Text>Pump Homie is Elite</Text>
+                    <TouchableOpacity style={styles.singInButton} onPress={() => DeleteUserData()}>
+                        <Text style={styles.buttonText}>Log out</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
             :
             <View style={styles.container}>
-                <TouchableOpacity style={styles.redButton} onPress={() => promptAsync()}>
+                <TouchableOpacity style={styles.singInButton} onPress={() => promptAsync()}>
                     <Text style={styles.buttonText}>Sign in with Google</Text>
                 </TouchableOpacity>
             </View>
@@ -89,30 +107,54 @@ export default GoogleOAuth;
 
 const styles = StyleSheet.create({
     container: {
+        paddingTop: 40,
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 20
+        gap: 20,
+        width: '100%',
+        paddingBottom: 40
     },
+    bioProfileWrapper:{
+        width: '90%',
+        justifyContent: 'left',
+        flexDirection: 'column',
+        gap: 10
+    },
+    profile:{
+        display: 'flex',
+        flexDirection: 'row',
+        gap: 40
+    },
+    profileText:{
+        flexDirection: 'column',
+        gap: 10
+    },
+    profileMedals:{
+        display: 'flex',
+        flexDirection: 'row',
+        alignContent: 'center'
+    },
+
     infoWrapper: {
 
     },
     image: {
-        width: 50,
-        height: 50,
+        width: globalStyles.profileLogoSize,
+        height: globalStyles.profileLogoSize,
         borderRadius: 100
     },
     text: {
         color: globalStyles.activePrimaryColor,
         fontWeight: 'bold',
-        paddingLeft: 10
     },
-    redButton: {
+    singInButton: {
         backgroundColor: globalStyles.activePrimaryColor,
         padding: 10,            
-        borderRadius: 5
+        borderRadius: 5,
     },
     buttonText: {
         color: 'white',        
-        fontWeight: 'bold'      
+        fontWeight: 'bold',
+        textAlign: 'right'    
     }
 });
