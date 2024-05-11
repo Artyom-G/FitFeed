@@ -13,18 +13,17 @@ const Timer = () => {
 
     useEffect(() => {
         async function dummyFunc(){
-            await getTimerInfo();
+            await getTimerInfoInitial();
         }
         dummyFunc();
     }, []);
 
-    const getTimerInfo = async () => {
-        const infoStr = await AsyncStorage.getItem("@fitfeedTimerStart");
-        const info = JSON.parse(infoStr);
-        if(info){
+    const getTimerInfoInitial = async () => {
+        const timeThenStr = await AsyncStorage.getItem("@fitfeedTimerStart");
+        const timeThen = JSON.parse(timeThenStr);
+        if(timeThen){
             const timeNow = new Date().getTime();
             await AsyncStorage.setItem("@fitfeedTimerEnd", JSON.stringify(timeNow));
-            const timeThen = info;
             setTimer(Math.floor((timeNow - timeThen)/1000));
             setIsActive(true);
             handleStart();
@@ -37,7 +36,26 @@ const Timer = () => {
         }
     }
 
+    const getTimerInfoPress = async () => {
+        const timeThenStr = await AsyncStorage.getItem("@fitfeedTimerStart");
+        const timeThen = JSON.parse(timeThenStr);
+        if(timeThen){
+            const timeNow = new Date().getTime();
+            await AsyncStorage.setItem("@fitfeedTimerEnd", JSON.stringify(timeNow));
+            setTimer(Math.floor((timeNow - timeThen)/1000));
+        }
+        else{
+            const timeNow = new Date().getTime();
+            await AsyncStorage.setItem("@fitfeedTimerStart", JSON.stringify(timeNow));
+            await AsyncStorage.setItem("@fitfeedTimerEnd", JSON.stringify(timeNow));
+            setTimer(0);
+        }
+        setIsActive(true);
+        handleStart();
+    }
+
     const handleStart = () => {
+        console.log("handleStart!");
         setIsActive(true);
         //await getTimerInfo();
         countRef.current = setInterval(() => {
@@ -46,11 +64,11 @@ const Timer = () => {
     };
 
     const handleReset = async () => {
+        console.log("handleReset!");
         clearInterval(countRef.current);
         setIsActive(false);
-        const timeNow = new Date().getTime();
-        await AsyncStorage.setItem("@fitfeedTimerStart", JSON.stringify(timeNow));
-        await AsyncStorage.setItem("@fitfeedTimerEnd", JSON.stringify(timeNow));
+        await AsyncStorage.removeItem("@fitfeedTimerStart");
+        await AsyncStorage.removeItem("@fitfeedTimerEnd");
         setTimer(0);
         showToastWithGravity();
 
@@ -76,7 +94,7 @@ const Timer = () => {
             <Text>{formatTime(timer)}</Text>
             {
                 !isActive ?
-                    <TouchableOpacity onPress={() => handleStart()}>
+                    <TouchableOpacity onPress={() => getTimerInfoPress()}>
                         <Icon name='play-circle' size={globalStyles.bottomBarIconSize} color={globalStyles.activePrimaryColor}/>
                     </TouchableOpacity>
                     :
