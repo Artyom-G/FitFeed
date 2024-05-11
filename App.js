@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import HomeScreen from './screens/homeScreen';
 import InboxScreen from './screens/inboxScreen';
 import ProfileScreen from './screens/profileScreen';
 import TrackerScreen from './screens/trackerScreen';
