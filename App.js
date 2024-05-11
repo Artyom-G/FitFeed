@@ -50,11 +50,11 @@ export default function App() {
             height: 60,
           },
           headerTitleStyle: {
-            color: 'white', 
+            color: 'white',
             fontSize: 26
           },
           tabBarAndroidRipple: true,
-          headerTitle: (props) => <Text {...props} style={styles.header}>{route.name}</Text>, 
+          headerTitle: (props) => <Text {...props} style={styles.header}>{route.name}</Text>,
         })}
       >
 
@@ -67,10 +67,10 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  container:{
+  container: {
     backgroundColor: globalStyles.backgroundColor
   },
-  header:{
+  header: {
     color: globalStyles.headerColor,
     fontSize: globalStyles.headerSize,
     fontWeight: 'bold',

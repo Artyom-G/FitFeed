@@ -25,7 +25,7 @@ function ProfileHeader() {
 
     async function handleSignInWithGoogle() {
         //console.log("t3");
-        const user = await AsyncStorage.getItem("@user");
+        const user = await AsyncStorage.getItem("@fitfeedUser");
         if (!user) {
             ///console.log("test2");
             if (response?.type === "success") {
@@ -53,7 +53,7 @@ function ProfileHeader() {
             //console.log(response);
             const user = await response.json();
             //console.log(user);
-            await AsyncStorage.setItem("@user", JSON.stringify(user));
+            await AsyncStorage.setItem("@fitfeedUser", JSON.stringify(user));
             setUserInfo(user);
             setSignedIn(true);
         } catch (error) {
@@ -63,7 +63,7 @@ function ProfileHeader() {
     }
 
     const DeleteUserData = () => {
-        AsyncStorage.removeItem("@user");
+        AsyncStorage.removeItem("@fitfeedUser");
         setUserInfo(null);
         setSignedIn(false);
     }

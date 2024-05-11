@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Button, View, Text } from 'react-native';
-import Timer from '../components/timer';
+import Timer from '../components/timerOld';
 
 function HomeScreen({ navigation }) {
   return (
