@@ -6,7 +6,6 @@ import ProfileScreen from './screens/profileScreen';
 import TrackerScreen from './screens/trackerScreen';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { StyleSheet, View, Text } from 'react-native';
-//
 
 const globalStyles = require('./globalStyles.json');
 const Tab = createBottomTabNavigator();
