@@ -18,10 +18,10 @@ export default function App() {
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
-            if (route.name === 'Tracker') {
-              iconName = 'home';
-            } else if (route.name === 'Inbox') {
+            if (route.name === 'Inbox') {
               iconName = 'inbox';
+            } else if (route.name === 'Tracker') {
+              iconName = 'plus-circle';
             } else if (route.name === 'Profile') {
               iconName = 'user';
             }
@@ -57,8 +57,8 @@ export default function App() {
         })}
       >
 
-        <Tab.Screen name="Tracker" component={TrackerScreen} />
         <Tab.Screen name="Inbox" component={InboxScreen} />
+        <Tab.Screen name="Tracker" component={TrackerScreen} />
         <Tab.Screen name="Profile" component={ProfileScreen} />
       </Tab.Navigator>
     </NavigationContainer>

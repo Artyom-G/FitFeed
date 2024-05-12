@@ -7,5 +7,11 @@
     "bottomBarIconSize": 26,
 
     "profileMedalIconSize": 14,
-    "profileLogoSize": 80
+    "profileLogoSize": 80,
+
+    "exerciseColors" : [
+        "#000000",
+        "red",
+        "yellow"
+    ]
 }
