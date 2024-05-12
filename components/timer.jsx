@@ -34,6 +34,7 @@ const Timer = () => {
             await AsyncStorage.setItem("@fitfeedTimerEnd", JSON.stringify(timeNow));
             setTimer(0);
         }
+        console.log(timer);
     }
 
     const getTimerInfoPress = async () => {
@@ -82,8 +83,9 @@ const Timer = () => {
     };
 
     const showToastWithGravity = () => {
+        console.log(timer);
         ToastAndroid.showWithGravity(
-          'Workout Finished!',
+          'Workout Finished!\n' + JSON.stringify(timer) + ' seconds',
           ToastAndroid.SHORT,
           ToastAndroid.CENTER,
         );
