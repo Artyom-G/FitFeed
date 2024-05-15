@@ -35,3 +35,13 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+
+#Other
+private/
+public/
+.firebaserc
+firebase.json
+google-services.json
+GoogleService-Info.plist
+package.json
+.github

@@ -5,7 +5,7 @@ import * as Google from 'expo-auth-session/providers/google';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const clientIDs = require('../clientIDs.json');
+const clientIDs = require('../private/clientIDs.json');
 const globalStyles = require("../globalStyles.json");
 
 WebBrowser.maybeCompleteAuthSession();
