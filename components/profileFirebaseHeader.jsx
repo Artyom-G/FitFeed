@@ -10,25 +10,28 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 const clientIDs = require('../private/clientIDs.json');
 const globalStyles = require("../globalStyles.json");
 
-GoogleSignin.configure({
-    androidClientId: clientIDs.android,
-    iosClientId: clientIDs.ios,
-    webClientId: clientIDs.web
-});
 
 WebBrowser.maybeCompleteAuthSession();
 
 function ProfileFirebaseHeader() {
+    GoogleSignin.configure({
+        androidClientId: clientIDs.android,
+        iosClientId: clientIDs.ios,
+        webClientId: clientIDs.web
+    });
     async function onGoogleButtonPress() {
+        console.log('button pressed')
         // Check if your device supports Google Play
         await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+        
         // Get the users ID token
         const { idToken } = await GoogleSignin.signIn();
-      
+
         // Create a Google credential with the token
         const googleCredential = auth.GoogleAuthProvider.credential(idToken);
       
         // Sign-in the user with the credential
+        console.log(auth().signInWithCredential(googleCredential))
         return auth().signInWithCredential(googleCredential);
     }
 
@@ -117,7 +120,7 @@ function ProfileFirebaseHeader() {
             </View>
             :
             <View style={styles.container}>
-                <TouchableOpacity style={styles.singInButton} onPress={() => onGoogleButtonPress()}>
+                <TouchableOpacity style={styles.singInButton} onPress={() => onGoogleButtonPress().then(() => console.log('Signed in with Google!'))}>
                     <Text style={styles.buttonText}>Sign in with Google</Text>
                 </TouchableOpacity>
             </View>
