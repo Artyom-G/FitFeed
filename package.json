@@ -22,6 +22,7 @@
     "eas": "^0.1.0",
     "expo": "~51.0.1",
     "expo-auth-session": "~5.5.2",
+    "expo-camera": "^15.0.8",
     "expo-crypto": "~13.0.2",
     "expo-dev-client": "~4.0.14",
     "expo-status-bar": "~1.12.1",

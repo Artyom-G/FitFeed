@@ -29,6 +29,14 @@
         "projectId": "7d83e923-f275-42fe-b81b-741c113cb534"
       }
     },
-    "scheme": "com.citricmelon.fitfeed"
+    "scheme": "com.citricmelon.fitfeed",
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera",
+        }
+      ]
+    ]
   }
 }
