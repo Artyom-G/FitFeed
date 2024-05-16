@@ -14,7 +14,7 @@ const TrackerScreen = () => {
             <Text>Tracker</Text>
             <ExerciseList/>
             <FirebaseTest/>
-            
+            <TakePictureButton />
             <Timer/>
         </View>
     );

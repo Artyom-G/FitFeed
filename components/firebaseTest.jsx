@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Platform, KeyboardAvoidingView, Button } from 'react-native';
-import { firebase } from '@react-native-firebase/database';
 import database from '@react-native-firebase/database';
 
 const globalStyles = require('../globalStyles.json');

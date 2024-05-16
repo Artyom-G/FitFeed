@@ -1,10 +1,18 @@
 import { CameraView, useCameraPermissions } from 'expo-camera';
-import { useState } from 'react';
-import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useState, useRef } from 'react';
+import { Button, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
+import database from '@react-native-firebase/database';
+
+import { utils } from '@react-native-firebase/app';
+import storage from '@react-native-firebase/storage';
 
 export default function TakePictureButton() {
   const [facing, setFacing] = useState('back');
   const [permission, requestPermission] = useCameraPermissions();
+  const [photoUri, setPhotoUri] = useState(null);
+  const cameraRef = useRef(null);
+
+  const reference = storage().ref('image.png');
 
   if (!permission) {
     // Camera permissions are still loading.
@@ -22,15 +30,62 @@ export default function TakePictureButton() {
   }
 
   function toggleCameraFacing() {
-    setFacing(current => (current === 'back' ? 'front' : 'back'));
+    if(facing == 'back'){
+        setFacing('front');
+    }
+    else{
+        setFacing('back');
+    }
+  }
+
+  async function takePicture() {
+    if (cameraRef.current) {
+      const photo = await cameraRef.current.takePictureAsync();
+      setPhotoUri(photo.uri);
+    }
+  }
+
+  async function acceptPicture() {
+    console.log('picture taken');
+    await uploadPhotoToStorage();
+
+    setPhotoUri(null); 
+  }
+
+  function retakePicture() {
+    setPhotoUri(null);
+  }
+
+  const uploadPhotoToStorage = async () => {
+    const pathToFile = photoUri;
+    await reference.putFile(pathToFile);
+  }
+
+  if (photoUri) {
+    return (
+      <View style={styles.container}>
+        <Image source={{ uri: photoUri }} style={styles.camera} />
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.button} onPress={async () => {acceptPicture()}}>
+            <Text style={styles.text}>✅</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={retakePicture}>
+            <Text style={styles.text}>🔄</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
   }
 
   return (
     <View style={styles.container}>
-      <CameraView style={styles.camera} facing={facing}>
+      <CameraView style={styles.camera} facing={facing} ref={cameraRef}>
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
             <Text style={styles.text}>Flip Camera</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={takePicture}>
+            <Text style={styles.text}>📸</Text>
           </TouchableOpacity>
         </View>
       </CameraView>
@@ -49,17 +104,18 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flex: 1,
     flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'flex-end',
     backgroundColor: 'transparent',
-    margin: 64,
+    marginBottom: 20,
   },
   button: {
-    flex: 1,
-    alignSelf: 'flex-end',
-    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    padding: 10,
+    borderRadius: 5,
   },
   text: {
-    fontSize: 24,
-    fontWeight: 'bold',
+    fontSize: 18,
     color: 'white',
   },
 });

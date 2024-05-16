@@ -40,6 +40,7 @@ public/
 .firebaserc
 firebase.json
 google-services.json
+android/app/google-services.json
 GoogleService-Info.plist
 package.json
 .github
