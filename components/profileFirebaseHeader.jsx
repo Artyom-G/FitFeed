@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import auth from '@react-native-firebase/auth';
 import { getAuth, onAuthStateChanged } from "@react-native-firebase/auth";
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import database from '@react-native-firebase/database';
 
 const clientIDs = require('../private/clientIDs.json');
 const globalStyles = require("../globalStyles.json");
@@ -26,9 +27,10 @@ function ProfileFirebaseHeader() {
         const unsubscribe = onAuthStateChanged(Auth, (user) => {
             if (user) {
                 // User is signed in, see docs for a list of available properties
-                // https://firebase.google.com/docs/reference/js/auth.user
+                // https://firebase.google.com/docs/reference/js/auth.userinfo
                 setUserInfo(user);
                 setSignedIn(true);
+                writeToDatabase(user);
                 console.log("Signed in as " + user.displayName);
             } else {
                 // User is signed out
@@ -54,6 +56,21 @@ function ProfileFirebaseHeader() {
     async function signOutGoogle() {
         auth().signOut().then(() => console.log('User signed out!'))
         await GoogleSignin.signOut();
+    }
+
+    const writeToDatabase = async ({ uid, displayName, email, phoneNumber, photoURL }) => {
+        try{
+            await database().ref(`/users/${uid}`).set({
+                name: displayName,
+                email: email,
+                phoneNumber: phoneNumber,
+                profilePicture: photoURL
+            });
+            console.log('success');
+        }
+        catch(error){
+            console.log('error: ', error);
+        }
     }
 
     return (

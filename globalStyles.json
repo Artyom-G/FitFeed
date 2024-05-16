@@ -3,12 +3,14 @@
     "inactivePrimaryColor": "#9e4741",
     "backgroundColor": "#FEF7FF",
     "normalTextSize": 18,
+    "normalTextFont": "Arial",
 
     "bottomBarIconSize": 26,
 
     "profileMedalIconSize": 14,
     "profileLogoSize": 80,
 
+    "exerciseIconSize": 20,
     "exerciseColors" : [
         "#000000",
         "red",

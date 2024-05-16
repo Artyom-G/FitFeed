@@ -15,29 +15,29 @@ const ExerciseItem = ({name, color, index, onChangeName, onColor, onDelete}) => 
                 !editting?
                     <View style={styles.container}>
                         <TouchableOpacity>
-                            <Icon name="square" size={20} color={color}/>
+                            <Icon name="square" size={globalStyles.exerciseIconSize} color={color}/>
                         </TouchableOpacity>
                         <Text style={styles.name}>{name}</Text>
                         <View style={styles.buttons}>
                             <TouchableOpacity onPress={() => setEditting(true)}>
-                                <Icon name="pencil" size={20} color={color}/>
+                                <Icon name="pencil" size={globalStyles.exerciseIconSize} color={color}/>
                             </TouchableOpacity>
                         </View>
                     </View>
                     :
                     <View style={styles.container}>
                         <TouchableOpacity onPress={onColor}>
-                            <Icon name="pencil-square" size={20} color={color}/>
+                            <Icon name="pencil-square" size={globalStyles.exerciseIconSize} color={color}/>
                         </TouchableOpacity>
                         <KeyboardAvoidingView behaviour = {Platform.OS === "ios" ? "padding" : "height"} style={styles.writeCourseWrapper}>
                             <TextInput style={styles.name} placeholder={name} value={text} onChangeText={(text) => setText(text)} onSubmitEditing={() => {onChangeName(text, index); setEditting(false)}}/>
                         </KeyboardAvoidingView>
                         <View style={styles.buttons}>
                             <TouchableOpacity onPress={() => {onChangeName(text, index); setEditting(false)}}>
-                                <Icon name="check" size={20} color={color}/>
+                                <Icon name="check" size={globalStyles.exerciseIconSize} color={color}/>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={onDelete}>
-                                <Icon name="trash" size={20} color={color}/>
+                                <Icon name="trash" size={globalStyles.exerciseIconSize} color={color}/>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -58,16 +58,16 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        width: globalStyles.iconSizeCourses*5/2,
-        paddingLeft: globalStyles.iconSizeCourses/2,
+        width: globalStyles.exerciseIconSize*5/2,
+        paddingLeft: globalStyles.exerciseIconSize/2,
     }, 
     name:{
         width: '100%',
         textAlign: 'left',
         textAlignVertical: 'center',
-        paddingLeft: globalStyles.iconSizeCourses/2,
+        paddingLeft: globalStyles.exerciseIconSize/2,
         flexGrow: 1,
-        fontFamily: globalStyles.font,
+        fontFamily: globalStyles.normalTextFont,
         fontSize: globalStyles.normalTextSize
     },
     writeCourseWrapper:{

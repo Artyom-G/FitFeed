@@ -125,12 +125,12 @@ const styles = StyleSheet.create({
         width: '90%',
     },
     items:{
-        gap: globalStyles.iconSizeCourses/2
+        gap: globalStyles.exerciseIconSize/2
     },
     input:{
-        marginTop: globalStyles.iconSizeCourses/2,
+        marginTop: globalStyles.exerciseIconSize/2,
         fontSize: globalStyles.normalTextSize,
-        fontFamily: globalStyles.font
+        fontFamily: globalStyles.normalTextFont
     }
 });
 
