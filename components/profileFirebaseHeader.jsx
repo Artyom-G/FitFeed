@@ -5,6 +5,7 @@ import * as Google from 'expo-auth-session/providers/google';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import auth from '@react-native-firebase/auth';
+import { getAuth, onAuthStateChanged } from "@react-native-firebase/auth";
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 const clientIDs = require('../private/clientIDs.json');
@@ -14,83 +15,43 @@ const globalStyles = require("../globalStyles.json");
 WebBrowser.maybeCompleteAuthSession();
 
 function ProfileFirebaseHeader() {
+    
+    const [userInfo, setUserInfo] = React.useState(null);
+    const [signedIn, setSignedIn] = React.useState(false);
     GoogleSignin.configure({
         androidClientId: clientIDs.android,
         iosClientId: clientIDs.ios,
         webClientId: clientIDs.web
     });
+
+    const Auth = getAuth();
+    onAuthStateChanged(Auth, (user) => {
+        if (user) {
+            // User is signed in, see docs for a list of available properties
+            // https://firebase.google.com/docs/reference/js/auth.user
+            setUserInfo(user)
+            setSignedIn(true)
+            console.log("Signed in as " + user.displayName)
+        } else {
+            // User is signed out
+            setSignedIn(false)
+            setUserInfo(null)
+            console.log("signed out!")
+        }
+    });
+    
+
     async function onGoogleButtonPress() {
-        console.log('button pressed')
         // Check if your device supports Google Play
         await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-        
-        // Get the users ID token
         const { idToken } = await GoogleSignin.signIn();
-
-        // Create a Google credential with the token
         const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-      
-        console.log(googleCredential)
-        // Sign-in the user with the credential
-        console.log(auth().signInWithCredential(googleCredential))
         return auth().signInWithCredential(googleCredential);
     }
 
-    const [userInfo, setUserInfo] = React.useState(null);
-    const [request, response, promptAsync] = Google.useAuthRequest({
-        androidClientId: clientIDs.android,
-        iosClientId: clientIDs.ios,
-        webClientId: clientIDs.web
-    });
-    const [signedIn, setSignedIn] = React.useState(false);
-
-    React.useEffect(() => {
-        handleSignInWithGoogle();
-    }, [response]);
-
-    async function handleSignInWithGoogle() {
-        //console.log("t3");
-        const user = await AsyncStorage.getItem("@fitfeedUser");
-        if (!user) {
-            ///console.log("test2");
-            if (response?.type === "success") {
-                await getUserInfo(response.authentication.accessToken);
-                console.log("Success!!");
-            }
-            //await getUserInfo();
-        } else {
-            setUserInfo(JSON.parse(user));
-            setSignedIn(true);
-            //console.log("test1");
-            //console.log(JSON.stringify(userInfo));
-        }
-    }
-
-    const getUserInfo = async (token) => {
-        if (!token) return;
-        try {
-            const response = await fetch(
-                "https://www.googleapis.com/userinfo/v2/me",
-                {
-                    headers: { Authorization: `Bearer ${token}` },
-                }
-            );
-            //console.log(response);
-            const user = await response.json();
-            //console.log(user);
-            await AsyncStorage.setItem("@fitfeedUser", JSON.stringify(user));
-            setUserInfo(user);
-            setSignedIn(true);
-        } catch (error) {
-            console.log("error!");
-            console.log(error);
-        }
-    }
-
-    const DeleteUserData = () => {
-        AsyncStorage.removeItem("@fitfeedUser");
-        setUserInfo(null);
-        setSignedIn(false);
+    async function signOut() {
+        auth().signOut().then(() => console.log('User signed out!'))
+        await GoogleSignin.signOut();
     }
 
     return (
@@ -98,9 +59,9 @@ function ProfileFirebaseHeader() {
             <View style={styles.container}>
                 <View style={styles.bioProfileWrapper}>
                     <View style={styles.profile}>
-                        <Image source={{ uri: userInfo.picture }} style={styles.image}></Image>
+                        <Image source={{ uri: userInfo.photoURL }} style={styles.image}></Image>
                         <View style={styles.profileText}>
-                            <Text style={styles.text}>{userInfo.name}</Text>
+                            <Text style={styles.text}>{userInfo.displayName}</Text>
                             <Text>Elite Powerlifter</Text>
                             <View style={styles.profileMedals}>
                                 <Icon name={'star'} size={globalStyles.profileMedalIconSize} color={globalStyles.activePrimaryColor} />
@@ -114,7 +75,7 @@ function ProfileFirebaseHeader() {
                     <Text>Bogus Bogus Bogus</Text>
                     <Text>Bingus Bingus Bingus</Text>
                     <Text>Pump Homie is Elite</Text>
-                    <TouchableOpacity style={styles.singInButton} onPress={() => DeleteUserData()}>
+                    <TouchableOpacity style={styles.singInButton} onPress={() => signOut()}>
                         <Text style={styles.buttonText}>Log out</Text>
                     </TouchableOpacity>
                 </View>
