@@ -1,8 +1,6 @@
 import * as React from 'react';
-import { Button, View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import * as WebBrowser from "expo-web-browser";
-import * as Google from 'expo-auth-session/providers/google';
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect, useState } from 'react'
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import auth from '@react-native-firebase/auth';
 import { getAuth, onAuthStateChanged } from "@react-native-firebase/auth";
@@ -11,13 +9,10 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 const clientIDs = require('../private/clientIDs.json');
 const globalStyles = require("../globalStyles.json");
 
-
-WebBrowser.maybeCompleteAuthSession();
-
 function ProfileFirebaseHeader() {
     
-    const [userInfo, setUserInfo] = React.useState(null);
-    const [signedIn, setSignedIn] = React.useState(false);
+    const [userInfo, setUserInfo] = useState(null);
+    const [signedIn, setSignedIn] = useState(false);
 
     GoogleSignin.configure({
         androidClientId: clientIDs.android,
@@ -25,7 +20,8 @@ function ProfileFirebaseHeader() {
         webClientId: clientIDs.web
     });
 
-    React.useEffect(() => {
+    //OnAuthStateChanged
+    useEffect(() => {
         const Auth = getAuth();
         const unsubscribe = onAuthStateChanged(Auth, (user) => {
             if (user) {
@@ -47,7 +43,7 @@ function ProfileFirebaseHeader() {
     }, []);
     
 
-    async function onGoogleButtonPress() {
+    async function signInGoogle() {
         // Check if your device supports Google Play
         await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
         const { idToken } = await GoogleSignin.signIn();
@@ -55,7 +51,7 @@ function ProfileFirebaseHeader() {
         return auth().signInWithCredential(googleCredential);
     }
 
-    async function signOut() {
+    async function signOutGoogle() {
         auth().signOut().then(() => console.log('User signed out!'))
         await GoogleSignin.signOut();
     }
@@ -63,11 +59,11 @@ function ProfileFirebaseHeader() {
     return (
         signedIn ?
             <View style={styles.container}>
-                <View style={styles.bioProfileWrapper}>
-                    <View style={styles.profile}>
-                        <Image source={{ uri: userInfo.photoURL }} style={styles.image}></Image>
-                        <View style={styles.profileText}>
-                            <Text style={styles.text}>{userInfo.displayName}</Text>
+                <View style={styles.profileWrapper}>
+                    <View style={styles.profileHeaderWrapper}>
+                        <Image source={{ uri: userInfo.photoURL }} style={styles.profilePicture}></Image>
+                        <View style={styles.profileNameWrapper}>
+                            <Text style={styles.nameText}>{userInfo.displayName}</Text>
                             <Text>Elite Powerlifter</Text>
                             <View style={styles.profileMedals}>
                                 <Icon name={'star'} size={globalStyles.profileMedalIconSize} color={globalStyles.activePrimaryColor} />
@@ -81,15 +77,15 @@ function ProfileFirebaseHeader() {
                     <Text>Bogus Bogus Bogus</Text>
                     <Text>Bingus Bingus Bingus</Text>
                     <Text>Pump Homie is Elite</Text>
-                    <TouchableOpacity style={styles.singInButton} onPress={() => signOut()}>
-                        <Text style={styles.buttonText}>Log out</Text>
+                    <TouchableOpacity style={styles.singInButton} onPress={() => signOutGoogle()}>
+                        <Text style={styles.signInButtonText}>Log out</Text>
                     </TouchableOpacity>
                 </View>
             </View>
             :
             <View style={styles.container}>
-                <TouchableOpacity style={styles.singInButton} onPress={() => onGoogleButtonPress().then(() => console.log('Signed in with Google!'))}>
-                    <Text style={styles.buttonText}>Sign in with Google</Text>
+                <TouchableOpacity style={styles.singInButton} onPress={() => signInGoogle().then(() => console.log('Signed in with Google!'))}>
+                    <Text style={styles.signInButtonText}>Sign in with Google</Text>
                 </TouchableOpacity>
             </View>
     );
@@ -106,18 +102,18 @@ const styles = StyleSheet.create({
         width: '100%',
         paddingBottom: 40
     },
-    bioProfileWrapper:{
+    profileWrapper:{
         width: '90%',
         justifyContent: 'left',
         flexDirection: 'column',
         gap: 10
     },
-    profile:{
+    profileHeaderWrapper:{
         display: 'flex',
         flexDirection: 'row',
         gap: 40
     },
-    profileText:{
+    profileNameWrapper:{
         flexDirection: 'column',
         gap: 10
     },
@@ -126,16 +122,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignContent: 'center'
     },
-
-    infoWrapper: {
-
-    },
-    image: {
+    profilePicture: {
         width: globalStyles.profileLogoSize,
         height: globalStyles.profileLogoSize,
         borderRadius: 100
     },
-    text: {
+    nameText: {
         color: globalStyles.activePrimaryColor,
         fontWeight: 'bold',
         fontSize: 22,
@@ -145,7 +137,7 @@ const styles = StyleSheet.create({
         padding: 10,            
         borderRadius: 5,
     },
-    buttonText: {
+    signInButtonText: {
         color: 'white',        
         fontWeight: 'bold',
         textAlign: 'right'    
