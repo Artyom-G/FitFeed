@@ -18,27 +18,33 @@ function ProfileFirebaseHeader() {
     
     const [userInfo, setUserInfo] = React.useState(null);
     const [signedIn, setSignedIn] = React.useState(false);
+
     GoogleSignin.configure({
         androidClientId: clientIDs.android,
         iosClientId: clientIDs.ios,
         webClientId: clientIDs.web
     });
 
-    const Auth = getAuth();
-    onAuthStateChanged(Auth, (user) => {
-        if (user) {
-            // User is signed in, see docs for a list of available properties
-            // https://firebase.google.com/docs/reference/js/auth.user
-            setUserInfo(user)
-            setSignedIn(true)
-            console.log("Signed in as " + user.displayName)
-        } else {
-            // User is signed out
-            setSignedIn(false)
-            setUserInfo(null)
-            console.log("signed out!")
-        }
-    });
+    React.useEffect(() => {
+        const Auth = getAuth();
+        const unsubscribe = onAuthStateChanged(Auth, (user) => {
+            if (user) {
+                // User is signed in, see docs for a list of available properties
+                // https://firebase.google.com/docs/reference/js/auth.user
+                setUserInfo(user);
+                setSignedIn(true);
+                console.log("Signed in as " + user.displayName);
+            } else {
+                // User is signed out
+                setSignedIn(false);
+                setUserInfo(null);
+                console.log("signed out!");
+            }
+        });
+
+        // Clean up the subscription on unmount
+        return () => unsubscribe();
+    }, []);
     
 
     async function onGoogleButtonPress() {
