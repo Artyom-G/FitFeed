@@ -9,7 +9,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { PostsTab } from './postsTab';
 import { StatsTab } from './statsTab';
 
-
 const globalStyles = require('../globalStyles.json');
 const Tab = createMaterialTopTabNavigator();
 
