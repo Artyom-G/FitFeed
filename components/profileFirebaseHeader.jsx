@@ -30,6 +30,7 @@ function ProfileFirebaseHeader() {
         // Create a Google credential with the token
         const googleCredential = auth.GoogleAuthProvider.credential(idToken);
       
+        console.log(googleCredential)
         // Sign-in the user with the credential
         console.log(auth().signInWithCredential(googleCredential))
         return auth().signInWithCredential(googleCredential);
