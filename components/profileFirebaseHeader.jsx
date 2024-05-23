@@ -1,11 +1,13 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import auth from '@react-native-firebase/auth';
 import { getAuth, onAuthStateChanged } from "@react-native-firebase/auth";
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import database from '@react-native-firebase/database';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Context } from '../App';
 
 const clientIDs = require('../private/clientIDs.json');
 const globalStyles = require("../globalStyles.json");
@@ -14,6 +16,7 @@ function ProfileFirebaseHeader() {
     
     const [userInfo, setUserInfo] = useState(null);
     const [signedIn, setSignedIn] = useState(false);
+    const [userId, setUserId] = useContext(Context);
 
     GoogleSignin.configure({
         androidClientId: clientIDs.android,
@@ -29,13 +32,17 @@ function ProfileFirebaseHeader() {
                 // User is signed in, see docs for a list of available properties
                 // https://firebase.google.com/docs/reference/js/auth.userinfo
                 setUserInfo(user);
+                setUserId(user.uid);
                 setSignedIn(true);
+                //setUserLocally();
                 writeToDatabase(user);
                 console.log("Signed in as " + user.displayName);
             } else {
                 // User is signed out
+                setUserId(null);
                 setSignedIn(false);
                 setUserInfo(null);
+                deleteUserLocally();
                 console.log("signed out!");
             }
         });
@@ -60,6 +67,7 @@ function ProfileFirebaseHeader() {
 
     const writeToDatabase = async ({ uid, displayName, email, phoneNumber, photoURL }) => {
         try{
+            //await AsyncStorage.setItem("@fitfeedUserID", JSON.stringify(uid));
             await database().ref(`/users/${uid}`).set({
                 name: displayName,
                 email: email,
@@ -71,6 +79,17 @@ function ProfileFirebaseHeader() {
         catch(error){
             console.log('error: ', error);
         }
+    }
+
+    async function setUserLocally() {
+        await AsyncStorage.setItem("@fitfeedUserID", JSON.stringify(userInfo.uid));
+    }
+
+    const deleteUserLocally = () => {
+        //AsyncStorage.removeItem("@fitfeedUserID");
+        setUserId(null);
+        setUserInfo(null);
+        setSignedIn(false);
     }
 
     return (

@@ -1,10 +1,12 @@
 import { CameraView, useCameraPermissions } from 'expo-camera';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect, useContext } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import database from '@react-native-firebase/database';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { utils } from '@react-native-firebase/app';
 import storage from '@react-native-firebase/storage';
+import { Context } from '../App';
 
 export default function TakePictureButton() {
   const [facing, setFacing] = useState('back');
@@ -12,7 +14,26 @@ export default function TakePictureButton() {
   const [photoUri, setPhotoUri] = useState(null);
   const cameraRef = useRef(null);
 
-  const reference = storage().ref('image.png');
+  const [reference, setReference] = useState(null); 
+  const [userId, setUserId] = useContext(Context);
+
+  useEffect(() => {
+    console.log("takePicutreButton log")
+    if(userId){
+      setReference(storage().ref(`users/${userId}/image.png`));
+    }
+    else{
+      setReference(null);
+    }
+  }, [userId]);
+
+  if(reference == null){
+    return(
+      <View>
+        <Text>Please Sign in Before Taking Photos</Text>
+      </View>
+    );
+  }
 
   if (!permission) {
     // Camera permissions are still loading.
