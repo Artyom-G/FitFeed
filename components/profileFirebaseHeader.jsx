@@ -14,9 +14,8 @@ const globalStyles = require("../globalStyles.json");
 
 function ProfileFirebaseHeader() {
     
-    const [userInfo, setUserInfo] = useState(null);
-    const [signedIn, setSignedIn] = useState(false);
-    const [userId, setUserId] = useContext(Context);
+    const [signedIn, setSignedIn] = useContext(Context);
+    const [user, setUser] = useContext(Context);
 
     GoogleSignin.configure({
         androidClientId: clientIDs.android,
@@ -27,21 +26,19 @@ function ProfileFirebaseHeader() {
     //OnAuthStateChanged
     useEffect(() => {
         const Auth = getAuth();
-        const unsubscribe = onAuthStateChanged(Auth, (user) => {
-            if (user) {
+        const unsubscribe = onAuthStateChanged(Auth, (_user) => {
+            if (_user) {
                 // User is signed in, see docs for a list of available properties
                 // https://firebase.google.com/docs/reference/js/auth.userinfo
-                setUserInfo(user);
-                setUserId(user.uid);
+                setUser(_user);
                 setSignedIn(true);
                 //setUserLocally();
-                writeToDatabase(user);
-                console.log("Signed in as " + user.displayName);
+                writeToDatabase(_user);
+                console.log("Signed in as " + _user.displayName);
             } else {
                 // User is signed out
-                setUserId(null);
                 setSignedIn(false);
-                setUserInfo(null);
+                setUser(null);
                 deleteUserLocally();
                 console.log("signed out!");
             }
@@ -82,13 +79,12 @@ function ProfileFirebaseHeader() {
     }
 
     async function setUserLocally() {
-        await AsyncStorage.setItem("@fitfeedUserID", JSON.stringify(userInfo.uid));
+        await AsyncStorage.setItem("@fitfeedUserID", JSON.stringify(user.uid));
     }
 
     const deleteUserLocally = () => {
         //AsyncStorage.removeItem("@fitfeedUserID");
-        setUserId(null);
-        setUserInfo(null);
+        setUser(null);
         setSignedIn(false);
     }
 
@@ -97,9 +93,9 @@ function ProfileFirebaseHeader() {
             <View style={styles.container}>
                 <View style={styles.profileWrapper}>
                     <View style={styles.profileHeaderWrapper}>
-                        <Image source={{ uri: userInfo.photoURL }} style={styles.profilePicture}></Image>
+                        <Image source={{ uri: user.photoURL }} style={styles.profilePicture}></Image>
                         <View style={styles.profileNameWrapper}>
-                            <Text style={styles.nameText}>{userInfo.displayName}</Text>
+                            <Text style={styles.nameText}>{user.displayName}</Text>
                             <Text>Elite Powerlifter</Text>
                             <View style={styles.profileMedals}>
                                 <Icon name={'star'} size={globalStyles.profileMedalIconSize} color={globalStyles.activePrimaryColor} />

@@ -9,23 +9,24 @@ import storage from '@react-native-firebase/storage';
 import { Context } from '../App';
 
 export default function TakePictureButton() {
+
   const [facing, setFacing] = useState('back');
   const [permission, requestPermission] = useCameraPermissions();
   const [photoUri, setPhotoUri] = useState(null);
   const cameraRef = useRef(null);
 
   const [reference, setReference] = useState(null); 
-  const [userId, setUserId] = useContext(Context);
+  const [user, setUserId] = useContext(Context);
 
   useEffect(() => {
     console.log("takePicutreButton log")
-    if(userId){
-      setReference(storage().ref(`users/${userId}/image.png`));
+    if(user){
+      setReference(storage().ref(`users/${user.uid}/image.png`));
     }
     else{
       setReference(null);
     }
-  }, [userId]);
+  }, [user]);
 
   if(reference == null){
     return(
