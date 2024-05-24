@@ -28,6 +28,7 @@
     "expo-dev-client": "~4.0.14",
     "expo-status-bar": "~1.12.1",
     "expo-web-browser": "~13.0.3",
+    "lodash.filter": "^4.6.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "0.74.1",
