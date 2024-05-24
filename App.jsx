@@ -43,12 +43,12 @@ export default function App() {
                 name: displayName,
                 email: email,
                 phoneNumber: phoneNumber,
-                profilePicture: photoURL
+                profilePicture: photoURL,
+                username: email
             });
-            console.log('success');
         }
         catch(error){
-            console.log('error: ', error);
+            console.log('writeToDatabase in App.jsx Error: ', error);
         }
     }
 

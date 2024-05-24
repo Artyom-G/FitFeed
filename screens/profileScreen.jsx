@@ -10,6 +10,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 //Screens
 import { PostsTab } from './postsTab';
 import { StatsTab } from './statsTab';
+import SignInButton from '../components/signInButton';
 
 const globalStyles = require('../globalStyles.json');
 const Tab = createMaterialTopTabNavigator();
@@ -17,6 +18,15 @@ const Tab = createMaterialTopTabNavigator();
 const ProfileScreen = () => {
 
     const [user, setUser, userSignedIn, setUserSignedIn, signIn, signOut] = useContext(Context);
+
+    if(!user){
+        return(
+            <View>
+                <Text>Please Sign In to View Your Profile</Text>
+                <SignInButton></SignInButton>
+            </View>
+        )
+    }
 
     return (
         <SafeAreaView style={styles.container}>

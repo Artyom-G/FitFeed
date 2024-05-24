@@ -2,6 +2,8 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { View, SafeAreaView, TextInput, Text, StyleSheet, ActivityIndicator, FlatList, Image } from "react-native";
 import filter from 'lodash.filter';
+import database from '@react-native-firebase/database';
+import { UserSearchItem } from './userSearchItem';
 
 const API_ENDPOINT = `https://randomuser.me/api/?results=40`;
 
@@ -15,7 +17,7 @@ export const SearchUsers = () => {
 
     useEffect(() => {
         setIsLoading(true);
-        fetchData(API_ENDPOINT)
+        fetchDataNew();
     }, [])
 
     const fetchData = async(url) => {
@@ -35,6 +37,25 @@ export const SearchUsers = () => {
         }
     }
 
+    const fetchDataNew = async () => {
+        try{
+            const usersRef = database().ref('/users/');
+            const snapshot = await usersRef.once('value');
+            const usersData = snapshot.val();
+            if (usersData) {
+              setData(usersData);
+              setFullData(usersData);
+              //console.log(usersData);
+            }
+            setIsLoading(false);
+        }
+        catch (error){
+            setError(error);
+            console.log(error);
+            setIsLoading(false); 
+        }
+    }
+
     const handleSearch = (query) => {
         setSearchQuery(query);
         const formattedQuery = query.toLowerCase();
@@ -44,10 +65,8 @@ export const SearchUsers = () => {
         setData(filteredData);
     }
 
-    const contains = ({name, email}, query) => {
-        const {first, last} = name;
-
-        if(first.includes(query) || last.includes(query) || email.includes(query)){
+    const contains = ({name, email, username}, query) => {
+        if(name.includes(query) || username.includes(query) || email.includes(query)){
             return true;
         }
         else{
@@ -82,14 +101,8 @@ export const SearchUsers = () => {
                 value={searchQuery}
                 onChangeText={(query) => handleSearch(query)}
             />
-            <FlatList data={data} keyExtractor={(item) => item.login.username} renderItem={({item}) => (
-                <View style={styles.itemContainer}>
-                    <Image source={{uri: item.picture.thumbnail}} style={styles.image}/>
-                    <View>
-                        <Text style={styles.textName}>{item.name.first} {item.name.last}</Text>
-                        <Text style={styles.textEmail}>{item.email}</Text>
-                    </View>
-                </View>
+            <FlatList data={data} keyExtractor={(item) => item.username} renderItem={({item}) => (
+                <UserSearchItem item={item}/>
             )} />
         </SafeAreaView>
     );
