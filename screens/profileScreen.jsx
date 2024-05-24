@@ -3,6 +3,7 @@ import { Button, View, Text, StyleSheet } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ProfileFirebaseHeader from '../components/profileFirebaseHeader';
+import ProfileHeader from '../components/profileHeader';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 //Screens
@@ -15,7 +16,7 @@ const Tab = createMaterialTopTabNavigator();
 const ProfileScreen = () => {
     return (
         <SafeAreaView style={styles.container}>
-            <ProfileFirebaseHeader/>
+            <ProfileHeader/>
             <Tab.Navigator
                 screenOptions={({ route }) => ({
                     tabBarIcon: ({ focused, color, size }) => {

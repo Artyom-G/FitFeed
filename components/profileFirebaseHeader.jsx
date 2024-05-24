@@ -3,7 +3,6 @@ import { useEffect, useState, useContext } from 'react'
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import auth from '@react-native-firebase/auth';
-import { getAuth, onAuthStateChanged } from "@react-native-firebase/auth";
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { Context } from '../App';
 
