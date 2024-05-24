@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useContext } from 'react'
+import { useState, useContext } from 'react'
 import { View, Text, Image, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Context } from '../App';
@@ -9,18 +9,19 @@ import SignOutButton from './singOutButton';
 const clientIDs = require('../private/clientIDs.json');
 const globalStyles = require("../globalStyles.json");
 
-function ProfileHeader() {
+function ProfileHeader({userProfile}) {
 
     const [user, setUser, userSignedIn, setUserSignedIn, signIn, signOut] = useContext(Context);
+    const [userDisplay, setUserDisplay] = useState(userProfile);
 
     return (
         userSignedIn ?
             <View style={styles.container}>
                 <View style={styles.profileWrapper}>
                     <View style={styles.profileHeaderWrapper}>
-                        <Image source={{ uri: user.photoURL }} style={styles.profilePicture}></Image>
+                        <Image source={{ uri: userDisplay.photoURL }} style={styles.profilePicture}></Image>
                         <View style={styles.profileNameWrapper}>
-                            <Text style={styles.nameText}>{user.displayName}</Text>
+                            <Text style={styles.nameText}>{userDisplay.displayName}</Text>
                             <Text>Elite Powerlifter</Text>
                             <View style={styles.profileMedals}>
                                 <Icon name={'star'} size={globalStyles.profileMedalIconSize} color={globalStyles.activePrimaryColor} />
@@ -32,8 +33,6 @@ function ProfileHeader() {
                     </View>
                     <Text>This Bio is very long lol</Text>
                     <Text>Bogus Bogus Bogus</Text>
-                    <Text>Bingus Bingus Bingus</Text>
-                    <Text>Pump Homie is Elite</Text>
                     <SignOutButton/>
                 </View>
             </View>
@@ -48,7 +47,7 @@ export default ProfileHeader;
 
 const styles = StyleSheet.create({
     container: {
-        paddingTop: 40,
+        paddingTop: 5,
         alignItems: 'center',
         justifyContent: 'center',
         gap: 20,

@@ -1,8 +1,9 @@
 import * as React from 'react';
+import { useContext } from 'react';
+import { Context } from '../App';
 import { Button, View, Text, StyleSheet } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import ProfileFirebaseHeader from '../components/profileFirebaseHeader';
 import ProfileHeader from '../components/profileHeader';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -14,9 +15,12 @@ const globalStyles = require('../globalStyles.json');
 const Tab = createMaterialTopTabNavigator();
 
 const ProfileScreen = () => {
+
+    const [user, setUser, userSignedIn, setUserSignedIn, signIn, signOut] = useContext(Context);
+
     return (
         <SafeAreaView style={styles.container}>
-            <ProfileHeader/>
+            <ProfileHeader userProfile={user}/>
             <Tab.Navigator
                 screenOptions={({ route }) => ({
                     tabBarIcon: ({ focused, color, size }) => {
@@ -44,7 +48,7 @@ const ProfileScreen = () => {
                     },
                 })}
             >
-                <Tab.Screen name="PostsTab" component={PostsTab} />
+                <Tab.Screen name="PostsTab" component={PostsTab} initialParams={{userId: user.uid}}/>
                 <Tab.Screen name="StatsTab" component={StatsTab} />
             </Tab.Navigator>
         </SafeAreaView>

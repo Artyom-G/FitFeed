@@ -1,10 +1,6 @@
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import { useState, useRef, useEffect, useContext } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
-import database from '@react-native-firebase/database';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
-import { utils } from '@react-native-firebase/app';
 import storage from '@react-native-firebase/storage';
 import { Context } from '../App';
 
@@ -19,9 +15,15 @@ export default function TakePictureButton() {
   const [user, setUserId] = useContext(Context);
 
   useEffect(() => {
-    console.log("takePicutreButton log")
+    console.log("takePictureButton log")
     if(user){
-      setReference(storage().ref(`users/${user.uid}/image.png`));
+      const currentdate = new Date(); 
+      const datetime = currentdate.toLocaleDateString().replace(/\//g, '-') + "_"
+                      + " @ "  
+                      + currentdate.getHours() + ":"  
+                      + currentdate.getMinutes() + ":" 
+                      + currentdate.getSeconds();
+      setReference(storage().ref(`users/${user.uid}/${datetime}`));
     }
     else{
       setReference(null);
