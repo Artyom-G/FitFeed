@@ -6,6 +6,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ProfileHeader from '../components/profileHeader';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useRoute } from '@react-navigation/native';
 
 //Screens
 import { PostsTab } from './postsTab';
@@ -16,10 +17,12 @@ const globalStyles = require('../globalStyles.json');
 const Tab = createMaterialTopTabNavigator();
 
 const ProfileScreen = () => {
+    const route = useRoute();
+    const { _user } = route.params || {};
 
     const [user, setUser, userSignedIn, setUserSignedIn, signIn, signOut] = useContext(Context);
 
-    if(!user){
+    if(!user && !_user){
         return(
             <View>
                 <Text>Please Sign In to View Your Profile</Text>
@@ -28,9 +31,11 @@ const ProfileScreen = () => {
         )
     }
 
+    const displayUser = user || contextUser;
+
     return (
         <SafeAreaView style={styles.container}>
-            <ProfileHeader userProfile={user}/>
+            <ProfileHeader userProfile={displayUser}/>
             <Tab.Navigator
                 screenOptions={({ route }) => ({
                     tabBarIcon: ({ focused, color, size }) => {
@@ -58,7 +63,7 @@ const ProfileScreen = () => {
                     },
                 })}
             >
-                <Tab.Screen name="PostsTab" component={PostsTab} initialParams={{userId: user.uid}}/>
+                <Tab.Screen name="PostsTab" component={PostsTab} initialParams={{userId: displayUser.uid}}/>
                 <Tab.Screen name="StatsTab" component={StatsTab} />
             </Tab.Navigator>
         </SafeAreaView>

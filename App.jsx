@@ -1,19 +1,25 @@
 import * as React from 'react';
 import { useState, useEffect, createContext } from 'react';
+import { StyleSheet, View, Text } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+//Navigation
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
+//Screens
 import InboxScreen from './screens/inboxScreen';
 import ProfileScreen from './screens/profileScreen';
 import TrackerScreen from './screens/trackerScreen';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { StyleSheet, View, Text } from 'react-native';
-import auth from '@react-native-firebase/auth';
+
+//Storage
 import { getAuth, onAuthStateChanged } from "@react-native-firebase/auth";
 import database from '@react-native-firebase/database';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const globalStyles = require('./globalStyles.json');
 const Tab = createBottomTabNavigator();
+
 export const Context = createContext();
 
 export default function App() {

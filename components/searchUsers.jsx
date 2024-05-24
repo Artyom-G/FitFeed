@@ -5,8 +5,6 @@ import filter from 'lodash.filter';
 import database from '@react-native-firebase/database';
 import { UserSearchItem } from './userSearchItem';
 
-const API_ENDPOINT = `https://randomuser.me/api/?results=40`;
-
 export const SearchUsers = () => {
     
     const [isLoading, setIsLoading] = useState(false);
@@ -17,27 +15,10 @@ export const SearchUsers = () => {
 
     useEffect(() => {
         setIsLoading(true);
-        fetchDataNew();
+        fetchData();
     }, [])
 
-    const fetchData = async(url) => {
-        try{
-            const response = await fetch(url);
-            const json = await response.json();
-            setData(json.results);
-            setFullData(json.results);
-            //console.log(json.results);  
-
-            setIsLoading(false);
-        }
-        catch (error){
-            setError(error);
-            console.log(error);
-            setIsLoading(false);
-        }
-    }
-
-    const fetchDataNew = async () => {
+    const fetchData = async () => {
         try{
             const usersRef = database().ref('/users/');
             const snapshot = await usersRef.once('value');
@@ -45,7 +26,6 @@ export const SearchUsers = () => {
             if (usersData) {
               setData(usersData);
               setFullData(usersData);
-              //console.log(usersData);
             }
             setIsLoading(false);
         }
