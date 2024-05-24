@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, createContext } from 'react';
+import { useState, useEffect, createContext } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import InboxScreen from './screens/inboxScreen';
@@ -7,6 +7,10 @@ import ProfileScreen from './screens/profileScreen';
 import TrackerScreen from './screens/trackerScreen';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { StyleSheet, View, Text } from 'react-native';
+import auth from '@react-native-firebase/auth';
+import { getAuth, onAuthStateChanged } from "@react-native-firebase/auth";
+import database from '@react-native-firebase/database';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const globalStyles = require('./globalStyles.json');
 const Tab = createBottomTabNavigator();
@@ -20,11 +24,69 @@ export default function App() {
     const signIn = (_user) => {
         setUser(_user);
         setUserSignedIn(true);
+        writeToDatabase(_user);
+        setUserLocally();
+        console.log("Signed in as " + _user.displayName);
     }
 
     const signOut = () => {
         setUserSignedIn(false);
         setUser(null);
+        deleteUserLocally();
+        console.log("Signed Out!");
+    }
+
+    const writeToDatabase = async ({ uid, displayName, email, phoneNumber, photoURL }) => {
+        try{
+            //await AsyncStorage.setItem("@fitfeedUserID", JSON.stringify(uid));
+            await database().ref(`/users/${uid}`).set({
+                name: displayName,
+                email: email,
+                phoneNumber: phoneNumber,
+                profilePicture: photoURL
+            });
+            console.log('success');
+        }
+        catch(error){
+            console.log('error: ', error);
+        }
+    }
+
+    async function setUserLocally() {
+        await AsyncStorage.setItem("@fitfeedUser", JSON.stringify(user));
+    }
+
+    //OnAuthStateChanged
+    //WARNING: WHAT IF USER NOT CONNECTED TO INTERNET
+    useEffect(() => {
+        const Auth = getAuth();
+        const unsubscribe = onAuthStateChanged(Auth, (_user) => {
+            if (_user) {
+                // https://firebase.google.com/docs/reference/js/auth.userinfo
+                signIn(_user);             
+            } else {
+                signOut();
+            }
+        });
+
+        return () => unsubscribe();
+    }, []);
+
+    async function getUserLocally() {
+        const _user = JSON.parse(await AsyncStorage.setItem("@fitfeedUser"));
+        console.log("Console log " + _user);
+        if(_user){
+            signIn(_user);
+        }
+        else{
+            signOut();
+        }
+    }
+
+    const deleteUserLocally = () => {
+        AsyncStorage.removeItem("@fitfeedUser");
+        setUser(null);
+        setUserSignedIn(false);
     }
 
     return (

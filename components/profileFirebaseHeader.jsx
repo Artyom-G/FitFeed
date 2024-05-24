@@ -5,49 +5,20 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import auth from '@react-native-firebase/auth';
 import { getAuth, onAuthStateChanged } from "@react-native-firebase/auth";
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import database from '@react-native-firebase/database';
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Context } from '../App';
 
 const clientIDs = require('../private/clientIDs.json');
 const globalStyles = require("../globalStyles.json");
 
 function ProfileFirebaseHeader() {
-    
-    const [signedIn, setSignedIn] = useContext(Context);
-    const [user, setUser] = useContext(Context);
+
+    const [user, setUser, userSignedIn, setUserSignedIn, signIn, signOut] = useContext(Context);
 
     GoogleSignin.configure({
         androidClientId: clientIDs.android,
         iosClientId: clientIDs.ios,
         webClientId: clientIDs.web
     });
-
-    //OnAuthStateChanged
-    useEffect(() => {
-        const Auth = getAuth();
-        const unsubscribe = onAuthStateChanged(Auth, (_user) => {
-            if (_user) {
-                // User is signed in, see docs for a list of available properties
-                // https://firebase.google.com/docs/reference/js/auth.userinfo
-                setUser(_user);
-                setSignedIn(true);
-                //setUserLocally();
-                writeToDatabase(_user);
-                console.log("Signed in as " + _user.displayName);
-            } else {
-                // User is signed out
-                setSignedIn(false);
-                setUser(null);
-                deleteUserLocally();
-                console.log("signed out!");
-            }
-        });
-
-        // Clean up the subscription on unmount
-        return () => unsubscribe();
-    }, []);
-    
 
     async function signInGoogle() {
         // Check if your device supports Google Play
@@ -58,38 +29,12 @@ function ProfileFirebaseHeader() {
     }
 
     async function signOutGoogle() {
-        auth().signOut().then(() => console.log('User signed out!'))
+        auth().signOut().then()
         await GoogleSignin.signOut();
     }
 
-    const writeToDatabase = async ({ uid, displayName, email, phoneNumber, photoURL }) => {
-        try{
-            //await AsyncStorage.setItem("@fitfeedUserID", JSON.stringify(uid));
-            await database().ref(`/users/${uid}`).set({
-                name: displayName,
-                email: email,
-                phoneNumber: phoneNumber,
-                profilePicture: photoURL
-            });
-            console.log('success');
-        }
-        catch(error){
-            console.log('error: ', error);
-        }
-    }
-
-    async function setUserLocally() {
-        await AsyncStorage.setItem("@fitfeedUserID", JSON.stringify(user.uid));
-    }
-
-    const deleteUserLocally = () => {
-        //AsyncStorage.removeItem("@fitfeedUserID");
-        setUser(null);
-        setSignedIn(false);
-    }
-
     return (
-        signedIn ?
+        userSignedIn ?
             <View style={styles.container}>
                 <View style={styles.profileWrapper}>
                     <View style={styles.profileHeaderWrapper}>
