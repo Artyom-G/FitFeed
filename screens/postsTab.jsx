@@ -6,18 +6,17 @@ import storage from '@react-native-firebase/storage';
 
 export const PostsTab = () => {
     const route = useRoute();
-    const { userId } = route.params;
+    const { user } = route.params;
 
     const [images, setImages] = useState([]);
 
     useEffect(() => {
         listItems();
-        console.log(images);
     }, []);
 
     const listItems = async () => {
         try {
-            const storageRef = storage().ref().child(`users/${userId}`);
+            const storageRef = storage().ref().child(`users/${user.uid}`);
             const res = await storageRef.listAll();
             const urls = await Promise.all(res.items.map(item => item.getDownloadURL()));
             setImages(urls);

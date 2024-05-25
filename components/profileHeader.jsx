@@ -1,27 +1,42 @@
 import * as React from 'react';
-import { useState, useContext } from 'react'
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { useState, useEffect, useContext } from 'react'
+import { View, Text, Image, StyleSheet, ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Context } from '../App';
 import SignInButton from './signInButton';
 import SignOutButton from './singOutButton';
+import { useRoute } from '@react-navigation/native';
+import LoadingIndicator from './loadingIndicator';
+
 
 const clientIDs = require('../private/clientIDs.json');
 const globalStyles = require("../globalStyles.json");
 
-function ProfileHeader({userProfile}) {
+function ProfileHeader({ passedUser }) {
 
     const [user, setUser, userSignedIn, setUserSignedIn, signIn, signOut] = useContext(Context);
-    const [userDisplay, setUserDisplay] = useState(userProfile);
+    const [displayUser, setDisplayUser] = useState(passedUser);
+    const [isLoading, setIsLoading] = useState(true);
 
-    return (
-        userSignedIn ?
+    useEffect(() => {
+        setDisplayUser(passedUser);
+        setIsLoading(false);
+    }, []);
+
+    if(isLoading){
+        return(
+            <LoadingIndicator/>
+        )
+    }
+
+    if(displayUser){
+        return(
             <View style={styles.container}>
                 <View style={styles.profileWrapper}>
                     <View style={styles.profileHeaderWrapper}>
-                        <Image source={{ uri: userDisplay.photoURL }} style={styles.profilePicture}></Image>
+                        <Image source={{ uri: displayUser.profilePicture }} style={styles.profilePicture}></Image>
                         <View style={styles.profileNameWrapper}>
-                            <Text style={styles.nameText}>{userDisplay.displayName}</Text>
+                            <Text style={styles.nameText}>{displayUser.name}</Text>
                             <Text>Elite Powerlifter</Text>
                             <View style={styles.profileMedals}>
                                 <Icon name={'star'} size={globalStyles.profileMedalIconSize} color={globalStyles.activePrimaryColor} />
@@ -33,14 +48,25 @@ function ProfileHeader({userProfile}) {
                     </View>
                     <Text>This Bio is very long lol</Text>
                     <Text>Bogus Bogus Bogus</Text>
-                    <SignOutButton/>
+                    {
+                        displayUser.uid === user.uid? <SignOutButton/> : <></>
+                    }
                 </View>
             </View>
-            :
+        );
+    }
+    else if(!user && !displayUser){
+        return(
             <View style={styles.container}>
                 <SignInButton/>
             </View>
-    );
+        );
+    }
+    else if(!displayUser){
+        return(
+            <Text>User Does Not Exist</Text>
+        );
+    }
 }
 
 export default ProfileHeader;

@@ -4,6 +4,7 @@ import { View, SafeAreaView, TextInput, Text, StyleSheet, ActivityIndicator, Fla
 import filter from 'lodash.filter';
 import database from '@react-native-firebase/database';
 import { UserSearchItem } from './userSearchItem';
+import LoadingIndicator from './loadingIndicator';
 
 export const SearchUsers = () => {
     
@@ -64,9 +65,7 @@ export const SearchUsers = () => {
 
     if(isLoading){
         return(
-            <View>
-                <ActivityIndicator size={'large'} color='#5500dc'/>
-            </View>
+            <LoadingIndicator/>
         )
     }
 

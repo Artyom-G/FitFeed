@@ -6,7 +6,7 @@ export const UserSearchItem = ({item}) => {
     const navigation = useNavigation();
 
     return (  
-        <TouchableOpacity style={styles.container} onPress={() => navigation.navigate('ProfileScreen')}>
+        <TouchableOpacity style={styles.container} onPress={() => navigation.navigate('ProfileScreen', { passedUser: item })}>
             <Image source={{uri: item.profilePicture}} style={styles.image}/>
             <View>
                 <Text style={styles.textName}>{item.name}</Text>
