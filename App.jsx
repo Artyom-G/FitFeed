@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect, createContext } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 //Navigation
@@ -25,7 +25,9 @@ export const Context = createContext();
 export default function App() {
 
     const [user, setUser] = useState(null);
+    const [localUser, setLocalUser] = useState(null);
     const [userSignedIn, setUserSignedIn] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     const signIn = (_user) => {
         setUser(_user);
@@ -33,6 +35,7 @@ export default function App() {
         writeToDatabase(_user);
         setUserLocally();
         console.log("Signed in as " + _user.displayName);
+        setIsLoading(false);
     }
 
     const signOut = () => {
@@ -40,18 +43,22 @@ export default function App() {
         setUser(null);
         deleteUserLocally();
         console.log("Signed Out!");
+        setIsLoading(false)
     }
 
     const writeToDatabase = async ({ uid, displayName, email, phoneNumber, photoURL }) => {
         try{
             //await AsyncStorage.setItem("@fitfeedUserID", JSON.stringify(uid));
-            await database().ref(`/users/${uid}`).set({
+            const _localUser = {
                 name: displayName,
                 email: email,
                 phoneNumber: phoneNumber,
                 profilePicture: photoURL,
-                username: email
-            });
+                username: email,
+                uid: uid
+            };
+            setLocalUser(_localUser);
+            await database().ref(`/users/${uid}`).set(_localUser);
         }
         catch(error){
             console.log('writeToDatabase in App.jsx Error: ', error);
@@ -93,6 +100,14 @@ export default function App() {
         AsyncStorage.removeItem("@fitfeedUser");
         setUser(null);
         setUserSignedIn(false);
+    }
+
+    if(isLoading){
+        return(
+            <View>
+                <ActivityIndicator size={'large'} color='#5500dc'/>
+            </View>
+        )
     }
 
     return (
@@ -143,7 +158,7 @@ export default function App() {
 
                     <Tab.Screen name="Inbox" component={InboxScreen} />
                     <Tab.Screen name="Tracker" component={TrackerScreen} />
-                    <Tab.Screen name="Profile" component={ProfileScreen} />
+                    <Tab.Screen name="Profile" component={ProfileScreen} initialParams={{_user: localUser}} />
                 </Tab.Navigator>
             </NavigationContainer>
         </Context.Provider>

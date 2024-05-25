@@ -5,7 +5,7 @@ import { SearchUsers } from '../components/searchUsers';
 function InboxScreen({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <SearchUsers/>
+      <SearchUsers navigation={navigation}/>
       <Text>Inbox Screen</Text>
     </View>
   );

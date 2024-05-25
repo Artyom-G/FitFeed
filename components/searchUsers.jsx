@@ -5,7 +5,7 @@ import filter from 'lodash.filter';
 import database from '@react-native-firebase/database';
 import { UserSearchItem } from './userSearchItem';
 
-export const SearchUsers = () => {
+export const SearchUsers = ( {navigation} ) => {
     
     const [isLoading, setIsLoading] = useState(false);
     const [data, setData] = useState([]);
@@ -82,7 +82,7 @@ export const SearchUsers = () => {
                 onChangeText={(query) => handleSearch(query)}
             />
             <FlatList data={data} keyExtractor={(item) => item.username} renderItem={({item}) => (
-                <UserSearchItem item={item}/>
+                <UserSearchItem navigation={navigation} item={item}/>
             )} />
         </SafeAreaView>
     );

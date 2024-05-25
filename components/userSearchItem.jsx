@@ -1,12 +1,12 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 
-export const UserSearchItem = ({item}) => {
+export const UserSearchItem = ({navigation, item}) => {
 
-    const navigation = useNavigation();
+    //const navigation = useNavigation();
 
     return (  
-        <TouchableOpacity style={styles.container} onPress={() => navigation.navigate('ProfileScreen')}>
+        <TouchableOpacity style={styles.container} onPress={() => navigation.navigate('Profile', { _user: item })}>
             <Image source={{uri: item.profilePicture}} style={styles.image}/>
             <View>
                 <Text style={styles.textName}>{item.name}</Text>
