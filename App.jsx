@@ -2,12 +2,10 @@ import * as React from 'react';
 import { useState, useEffect, createContext } from 'react';
 import { StyleSheet, View, Text, ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import LoadingIndicator from './components/loadingIndicator';
 
 //Navigation
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createNativeStackNavigator } from "@react-navigation/native-stack"; 
 
 //Screens
 import InboxScreen from './screens/inboxScreen';
@@ -21,88 +19,37 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const globalStyles = require('./globalStyles.json');
 const Tab = createBottomTabNavigator();
-const Stack = createNativeStackNavigator();
 
 export const Context = createContext();
-
-const BottomNavBar = ({user}) => (
-    <Tab.Navigator
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
-          let iconName;
-          if (route.name === 'Inbox') {
-            iconName = 'inbox';
-          } else if (route.name === 'Tracker') {
-            iconName = 'plus-circle';
-          } else if (route.name === 'Profile') {
-            iconName = 'user';
-          }
-          return <Icon name={iconName} size={globalStyles.bottomBarIconSize} color={focused ? globalStyles.activePrimaryColor : globalStyles.inactivePrimaryColor} />;
-        },
-        tabBarActiveTintColor: globalStyles.activePrimaryColor,
-        tabBarInactiveTintColor: globalStyles.inactivePrimaryColor,
-        tabBarStyle: {
-          backgroundColor: globalStyles.backgroundColor,
-          position: 'absolute',
-          bottom: 20,
-          left: 70,
-          right: 70,
-          elevation: 0,
-          borderRadius: 40,
-          height: 60,
-          paddingBottom: 5,
-          paddingTop: 5,
-        },
-        tabBarLabelStyle: {
-          display: 'none',
-        },
-        headerStyle: {
-          backgroundColor: 'white',
-          height: 60,
-        },
-        headerTitleStyle: {
-          color: 'white',
-          fontSize: 26,
-        },
-        tabBarAndroidRipple: true,
-        headerTitle: (props) => <Text {...props} style={styles.header}>{route.name}</Text>,
-      })}
-    >
-      <Tab.Screen name="Inbox" component={InboxScreen} />
-      <Tab.Screen name="Tracker" component={TrackerScreen} />
-      <Tab.Screen name="Profile" component={ProfileScreen} initialParams={{passedUser: user}}/>
-    </Tab.Navigator>
-);
 
 export default function App() {
 
     const [user, setUser] = useState(null);
+    const [localUser, setLocalUser] = useState(null);
     const [userSignedIn, setUserSignedIn] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
     const signIn = (_user) => {
-        setIsLoading(true);
         setUser(_user);
+        setUserSignedIn(true);
         writeToDatabase(_user);
         setUserLocally();
-        setUserSignedIn(true);
         console.log("Signed in as " + _user.displayName);
         setIsLoading(false);
     }
 
     const signOut = () => {
-        setIsLoading(true);
         setUserSignedIn(false);
         setUser(null);
         deleteUserLocally();
         console.log("Signed Out!");
-        setIsLoading(false);
+        setIsLoading(false)
     }
 
     const writeToDatabase = async ({ uid, displayName, email, phoneNumber, photoURL }) => {
         try{
             //await AsyncStorage.setItem("@fitfeedUserID", JSON.stringify(uid));
-            const _user = {
+            const _localUser = {
                 name: displayName,
                 email: email,
                 phoneNumber: phoneNumber,
@@ -110,8 +57,8 @@ export default function App() {
                 username: email,
                 uid: uid
             };
-            setUser(_user);
-            await database().ref(`/users/${uid}`).set(_user);
+            setLocalUser(_localUser);
+            await database().ref(`/users/${uid}`).set(_localUser);
         }
         catch(error){
             console.log('writeToDatabase in App.jsx Error: ', error);
@@ -134,7 +81,7 @@ export default function App() {
                 signOut();
             }
         });
-        setIsLoading(false);
+
         return () => unsubscribe();
     }, []);
 
@@ -157,17 +104,62 @@ export default function App() {
 
     if(isLoading){
         return(
-            <LoadingIndicator/>
+            <View>
+                <ActivityIndicator size={'large'} color='#5500dc'/>
+            </View>
         )
     }
 
     return (
         <Context.Provider value={[user, setUser, userSignedIn, setUserSignedIn, signIn, signOut]}>
             <NavigationContainer style={styles.container}>
-                <Stack.Navigator>
-                    <Stack.Screen name="Home" component={BottomNavBar} initialParams={{user: user}} options={{ headerShown: false }} />
-                    <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
-                </Stack.Navigator>
+                <Tab.Navigator
+                    screenOptions={({ route }) => ({
+                        tabBarIcon: ({ focused, color, size }) => {
+                            let iconName;
+                            if (route.name === 'Inbox') {
+                                iconName = 'inbox';
+                            } else if (route.name === 'Tracker') {
+                                iconName = 'plus-circle';
+                            } else if (route.name === 'Profile') {
+                                iconName = 'user';
+                            }
+                            return <Icon name={iconName} size={globalStyles.bottomBarIconSize} color={focused ? globalStyles.activePrimaryColor : globalStyles.inactivePrimaryColor} />;
+                        },
+                        tabBarActiveTintColor: globalStyles.activePrimaryColor,
+                        tabBarInactiveTintColor: globalStyles.inactivePrimaryColor,
+                        tabBarStyle: {
+                            backgroundColor: globalStyles.backgroundColor,
+                            position: 'absolute',
+                            bottom: 20,
+                            left: 70,
+                            right: 70,
+                            elevation: 0,
+                            borderRadius: 40,
+                            height: 60,
+                            paddingBottom: 5,
+                            paddingTop: 5,
+                        },
+                        tabBarLabelStyle: {
+                            display: 'none',
+                        },
+                        headerStyle: {
+                            backgroundColor: 'white',
+                            height: 60,
+                        },
+                        headerTitleStyle: {
+                            color: 'white',
+                            fontSize: 26
+                        },
+                        tabBarAndroidRipple: true,
+                        headerTitle: (props) => <Text {...props} style={styles.header}>{route.name}</Text>,
+                    })}
+                >
+
+                    <Tab.Screen name="Inbox" component={InboxScreen} />
+                    <Tab.Screen name="Tracker" component={TrackerScreen} />
+                    <Tab.Screen name="Profile" component={ProfileScreen} initialParams={{_user: localUser}} />
+                </Tab.Navigator>
             </NavigationContainer>
         </Context.Provider>
     );

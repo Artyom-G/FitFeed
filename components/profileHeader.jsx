@@ -1,36 +1,25 @@
 import * as React from 'react';
 import { useState, useEffect, useContext } from 'react'
-import { View, Text, Image, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, Image, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Context } from '../App';
 import SignInButton from './signInButton';
 import SignOutButton from './singOutButton';
-import { useRoute } from '@react-navigation/native';
-import LoadingIndicator from './loadingIndicator';
-
 
 const clientIDs = require('../private/clientIDs.json');
 const globalStyles = require("../globalStyles.json");
 
-function ProfileHeader({ passedUser }) {
+function ProfileHeader({userProfile}) {
 
     const [user, setUser, userSignedIn, setUserSignedIn, signIn, signOut] = useContext(Context);
-    const [displayUser, setDisplayUser] = useState(passedUser);
-    const [isLoading, setIsLoading] = useState(true);
+    const [displayUser, setDisplayUser] = useState(userProfile);
 
     useEffect(() => {
-        setDisplayUser(passedUser);
-        setIsLoading(false);
-    }, []);
+        setDisplayUser(userProfile);
+    }, [userProfile]);
 
-    if(isLoading){
-        return(
-            <LoadingIndicator/>
-        )
-    }
-
-    if(displayUser){
-        return(
+    return (
+        userSignedIn ?
             <View style={styles.container}>
                 <View style={styles.profileWrapper}>
                     <View style={styles.profileHeaderWrapper}>
@@ -48,25 +37,14 @@ function ProfileHeader({ passedUser }) {
                     </View>
                     <Text>This Bio is very long lol</Text>
                     <Text>Bogus Bogus Bogus</Text>
-                    {
-                        displayUser.uid === user.uid? <SignOutButton/> : <></>
-                    }
+                    <SignOutButton/>
                 </View>
             </View>
-        );
-    }
-    else if(!user && !displayUser){
-        return(
+            :
             <View style={styles.container}>
                 <SignInButton/>
             </View>
-        );
-    }
-    else if(!displayUser){
-        return(
-            <Text>User Does Not Exist</Text>
-        );
-    }
+    );
 }
 
 export default ProfileHeader;

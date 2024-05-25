@@ -7,7 +7,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import ProfileHeader from '../components/profileHeader';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRoute } from '@react-navigation/native';
-import LoadingIndicator from '../components/loadingIndicator';
 
 //Screens
 import { PostsTab } from './postsTab';
@@ -17,25 +16,22 @@ import SignInButton from '../components/signInButton';
 const globalStyles = require('../globalStyles.json');
 const Tab = createMaterialTopTabNavigator();
 
-const ProfileScreen = () => {
+const ProfileScreen = ( {navigation} ) => {
     const route = useRoute();
-    const { passedUser } = route.params || {};
-
+    const { _user } = route.params;
     const [user, setUser, userSignedIn, setUserSignedIn, signIn, signOut] = useContext(Context);
-    const [displayUser, setDisplayUser] = useState(passedUser);
+    const [displayUser, setDisplayUser] = useState(_user);
     const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {
-        if(passedUser){
-            setDisplayUser(passedUser);
-        }
-        else{
-            setDisplayUser(user);
-        }
-        setIsLoading(false);
-    }, []);
+    //console.log(_user);
 
-    if(!user && !passedUser){
+    useEffect(() => {
+        setDisplayUser(_user);
+        setIsLoading(false);
+    }, [_user]);
+    
+
+    if(!user && !displayUser){
         return(
             <View>
                 <Text>Please Sign In to View Your Profile</Text>
@@ -44,15 +40,25 @@ const ProfileScreen = () => {
         )
     }
 
+    if(!displayUser){
+        return(
+            <View>
+                <Text>User Does Not Exist</Text>
+            </View>
+        )
+    }
+
     if(isLoading){
         return(
-            <LoadingIndicator/>
+            <View>
+                <ActivityIndicator size={'large'} color='#5500dc'/>
+            </View>
         )
     }
 
     return (
         <SafeAreaView style={styles.container}>
-            <ProfileHeader passedUser={displayUser}/>
+            <ProfileHeader userProfile={displayUser}/>
             <Tab.Navigator
                 screenOptions={({ route }) => ({
                     tabBarIcon: ({ focused, color, size }) => {
@@ -80,7 +86,7 @@ const ProfileScreen = () => {
                     },
                 })}
             >
-                <Tab.Screen name="PostsTab" component={PostsTab} initialParams={{user: displayUser}}/>
+                <Tab.Screen name="PostsTab" component={PostsTab} initialParams={{userId: displayUser.uid}}/>
                 <Tab.Screen name="StatsTab" component={StatsTab} />
             </Tab.Navigator>
         </SafeAreaView>

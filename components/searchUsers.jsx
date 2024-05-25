@@ -4,9 +4,8 @@ import { View, SafeAreaView, TextInput, Text, StyleSheet, ActivityIndicator, Fla
 import filter from 'lodash.filter';
 import database from '@react-native-firebase/database';
 import { UserSearchItem } from './userSearchItem';
-import LoadingIndicator from './loadingIndicator';
 
-export const SearchUsers = () => {
+export const SearchUsers = ( {navigation} ) => {
     
     const [isLoading, setIsLoading] = useState(false);
     const [data, setData] = useState([]);
@@ -65,7 +64,9 @@ export const SearchUsers = () => {
 
     if(isLoading){
         return(
-            <LoadingIndicator/>
+            <View>
+                <ActivityIndicator size={'large'} color='#5500dc'/>
+            </View>
         )
     }
 
@@ -81,7 +82,7 @@ export const SearchUsers = () => {
                 onChangeText={(query) => handleSearch(query)}
             />
             <FlatList data={data} keyExtractor={(item) => item.username} renderItem={({item}) => (
-                <UserSearchItem item={item}/>
+                <UserSearchItem navigation={navigation} item={item}/>
             )} />
         </SafeAreaView>
     );
