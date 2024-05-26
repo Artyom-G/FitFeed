@@ -4,12 +4,10 @@ import { View, Text, Image, StyleSheet, ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import SignInButton from './signInButton';
 import SignOutButton from './singOutButton';
-import { useRoute } from '@react-navigation/native';
 import LoadingIndicator from '../../components/loadingIndicator';
 import { Context } from '../../components/globalContextProvider';
 
 
-const clientIDs = require('../../private/clientIDs.json');
 const globalStyles = require("../../globalStyles.json");
 
 function ProfileHeader({ passedUser }) {

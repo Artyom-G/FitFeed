@@ -2,16 +2,16 @@ import * as React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { GOOGLE_ANDROID_CLIENT_ID, GOOGLE_IOS_CLIENT_ID, GOOGLE_WEB_CLIENT_ID } from '@env';
 
-const clientIDs = require('../../private/clientIDs.json');
 const globalStyles = require("../../globalStyles.json");
 
 function SignInButton() {
 
     GoogleSignin.configure({
-        androidClientId: clientIDs.android,
-        iosClientId: clientIDs.ios,
-        webClientId: clientIDs.web
+        androidClientId: GOOGLE_ANDROID_CLIENT_ID,
+        iosClientId: GOOGLE_IOS_CLIENT_ID,
+        webClientId: GOOGLE_WEB_CLIENT_ID,
     });
 
     async function signInGoogle() {
