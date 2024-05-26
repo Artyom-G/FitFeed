@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useState, useEffect, useContext } from 'react';
-import { Context } from '../App';
 import { Button, View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -13,6 +12,7 @@ import LoadingIndicator from '../components/loadingIndicator';
 import { PostsTab } from './postsTab';
 import { StatsTab } from './statsTab';
 import SignInButton from '../components/signInButton';
+import { Context } from '../components/globalContextProvider';
 
 const globalStyles = require('../globalStyles.json');
 const Tab = createMaterialTopTabNavigator();
@@ -21,7 +21,7 @@ const ProfileScreen = () => {
     const route = useRoute();
     const { passedUser } = route.params || {};
 
-    const [user, setUser, userSignedIn, setUserSignedIn, signIn, signOut] = useContext(Context);
+    const { user } = useContext(Context);
     const [displayUser, setDisplayUser] = useState(passedUser);
     const [isLoading, setIsLoading] = useState(true);
 

@@ -2,7 +2,7 @@ import { CameraView, useCameraPermissions } from 'expo-camera';
 import { useState, useRef, useEffect, useContext } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import storage from '@react-native-firebase/storage';
-import { Context } from '../App';
+import { Context } from './globalContextProvider';
 
 export default function TakePictureButton() {
 

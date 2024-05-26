@@ -2,11 +2,11 @@ import * as React from 'react';
 import { useState, useEffect, useContext } from 'react'
 import { View, Text, Image, StyleSheet, ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { Context } from '../App';
 import SignInButton from './signInButton';
 import SignOutButton from './singOutButton';
 import { useRoute } from '@react-navigation/native';
 import LoadingIndicator from './loadingIndicator';
+import { Context } from './globalContextProvider';
 
 
 const clientIDs = require('../private/clientIDs.json');
@@ -14,7 +14,7 @@ const globalStyles = require("../globalStyles.json");
 
 function ProfileHeader({ passedUser }) {
 
-    const [user, setUser, userSignedIn, setUserSignedIn, signIn, signOut] = useContext(Context);
+    const { user } = useContext(Context);
     const [displayUser, setDisplayUser] = useState(passedUser);
     const [isLoading, setIsLoading] = useState(true);
 
