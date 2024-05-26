@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Image, ScrollView, StyleSheet } from "react-native";
-import { PostItem } from "../components/postItem";
+import { PostItem } from "./postItem";
 import { useRoute } from '@react-navigation/native';
 import storage from '@react-native-firebase/storage';
 

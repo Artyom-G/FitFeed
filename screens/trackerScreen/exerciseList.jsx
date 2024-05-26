@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity, Platform, Keyboard
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import ExerciseItem from './exerciseItem';
 
-const globalStyles = require('../globalStyles.json');
+const globalStyles = require('../../globalStyles.json');
 
 const ExerciseList = () => {
 

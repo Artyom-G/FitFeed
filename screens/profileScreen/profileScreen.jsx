@@ -1,20 +1,20 @@
 import * as React from 'react';
 import { useState, useEffect, useContext } from 'react';
-import { Button, View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import ProfileHeader from '../components/profileHeader';
+import ProfileHeader from './profileHeader';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRoute } from '@react-navigation/native';
-import LoadingIndicator from '../components/loadingIndicator';
+import LoadingIndicator from '../../components/loadingIndicator';
 
 //Screens
 import { PostsTab } from './postsTab';
 import { StatsTab } from './statsTab';
-import SignInButton from '../components/signInButton';
-import { Context } from '../components/globalContextProvider';
+import SignInButton from './signInButton';
+import { Context } from '../../components/globalContextProvider';
 
-const globalStyles = require('../globalStyles.json');
+const globalStyles = require('../../globalStyles.json');
 const Tab = createMaterialTopTabNavigator();
 
 const ProfileScreen = () => {

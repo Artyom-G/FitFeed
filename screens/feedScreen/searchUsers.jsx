@@ -4,7 +4,7 @@ import { View, SafeAreaView, TextInput, Text, StyleSheet, ActivityIndicator, Fla
 import filter from 'lodash.filter';
 import database from '@react-native-firebase/database';
 import { UserSearchItem } from './userSearchItem';
-import LoadingIndicator from './loadingIndicator';
+import LoadingIndicator from '../../components/loadingIndicator';
 
 export const SearchUsers = () => {
     

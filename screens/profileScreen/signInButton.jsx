@@ -3,8 +3,8 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
-const clientIDs = require('../private/clientIDs.json');
-const globalStyles = require("../globalStyles.json");
+const clientIDs = require('../../private/clientIDs.json');
+const globalStyles = require("../../globalStyles.json");
 
 function SignInButton() {
 

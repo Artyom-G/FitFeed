@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Platform, KeyboardAvoidingView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const globalStyles = require('../globalStyles.json');
+const globalStyles = require('../../globalStyles.json');
 
 const ExerciseItem = ({name, color, index, onChangeName, onColor, onDelete}) => {
 

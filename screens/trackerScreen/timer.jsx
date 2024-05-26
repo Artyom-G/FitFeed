@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, ToastAndroid } from 'react-na
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const globalStyles = require('../globalStyles.json');
+const globalStyles = require('../../globalStyles.json');
 
 const Timer = () => {
 

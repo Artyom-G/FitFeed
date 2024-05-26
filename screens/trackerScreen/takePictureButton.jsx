@@ -2,7 +2,7 @@ import { CameraView, useCameraPermissions } from 'expo-camera';
 import { useState, useRef, useEffect, useContext } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import storage from '@react-native-firebase/storage';
-import { Context } from './globalContextProvider';
+import { Context } from '../../components/globalContextProvider';
 
 export default function TakePictureButton() {
 
@@ -12,10 +12,9 @@ export default function TakePictureButton() {
   const cameraRef = useRef(null);
 
   const [reference, setReference] = useState(null); 
-  const [user, setUserId] = useContext(Context);
+  const { user, setUserId } = useContext(Context);
 
   useEffect(() => {
-    console.log("takePictureButton log")
     if(user){
       const currentdate = new Date(); 
       const datetime = currentdate.toLocaleDateString().replace(/\//g, '-') + "_"

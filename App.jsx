@@ -9,9 +9,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 // Screens
-import InboxScreen from './screens/inboxScreen';
-import ProfileScreen from './screens/profileScreen';
-import TrackerScreen from './screens/trackerScreen';
+import FeedScreen from './screens/feedScreen/feedScreen';
+import ProfileScreen from './screens/profileScreen/profileScreen';
+import TrackerScreen from './screens/trackerScreen/trackerScreen';
 
 // Context
 import GlobalContextProvider, { Context } from './components/globalContextProvider';
@@ -25,7 +25,7 @@ const BottomNavBar = ({ user }) => (
     screenOptions={({ route }) => ({
       tabBarIcon: ({ focused, color, size }) => {
         let iconName;
-        if (route.name === 'Inbox') {
+        if (route.name === 'Feed') {
           iconName = 'inbox';
         } else if (route.name === 'Tracker') {
           iconName = 'plus-circle';
@@ -63,7 +63,7 @@ const BottomNavBar = ({ user }) => (
       headerTitle: (props) => <Text {...props} style={styles.header}>{route.name}</Text>,
     })}
   >
-    <Tab.Screen name="Inbox" component={InboxScreen} />
+    <Tab.Screen name="Feed" component={FeedScreen} />
     <Tab.Screen name="Tracker" component={TrackerScreen} />
     <Tab.Screen name="Profile" component={ProfileScreen} initialParams={{ passedUser: user }} />
   </Tab.Navigator>

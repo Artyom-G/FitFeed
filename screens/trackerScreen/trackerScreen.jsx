@@ -1,19 +1,16 @@
 import * as React from 'react';
-import { Button, View, Text, StyleSheet } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import Timer from '../components/timer';
-import ExerciseList from '../components/exerciseList';
-import FirebaseTest from '../components/firebaseTest';
-import TakePictureButton from '../components/takePictureButton';
+import { View, Text, StyleSheet } from 'react-native';
+import Timer from './timer';
+import ExerciseList from './exerciseList';
+import TakePictureButton from './takePictureButton';
 
-const globalStyles = require('../globalStyles.json');
+const globalStyles = require('../../globalStyles.json');
 
 const TrackerScreen = () => {
     return (
         <View style={styles.container}>
             <Text>Tracker</Text>
             <ExerciseList/>
-            <FirebaseTest/>
             <TakePictureButton />
             <Timer/>
         </View>
