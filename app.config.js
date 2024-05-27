@@ -16,6 +16,8 @@ export default ({ config }) => ({
       ios: {
         supportsTablet: true,
         googleServicesFile: "./GoogleService-Info.plist",
+        bundleIdentifier: "com.citricmelon.fitfeed",
+        buildNumber: "1.0.1"
       },
       android: {
         adaptiveIcon: {
@@ -26,6 +28,7 @@ export default ({ config }) => ({
         permissions: [
           "CAMERA"
         ],
+        versionCode: 2,
         googleServicesFile: "./google-services.json",
       },
       web: {

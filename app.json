@@ -12,7 +12,9 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.citricmelon.fitfeed",
+      "buildNumber": "1.0.1"
     },
     "android": {
       "adaptiveIcon": {
@@ -20,6 +22,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.citricmelon.fitfeed",
+      "versionCode": 2,
       "permissions": [
         "CAMERA"
       ]
