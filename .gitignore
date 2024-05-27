@@ -34,14 +34,16 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 
+#Google Service
+google-services.json
+android/app/google-services.json
+GoogleService-Info.plist
+
 #Other
 private/
 public/
 .firebaserc
 firebase.json
-google-services.json
-android/app/google-services.json
-GoogleService-Info.plist
 package.json
 .github
 ios-setup.txt
