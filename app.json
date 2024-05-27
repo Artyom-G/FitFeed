@@ -2,7 +2,7 @@
   "expo": {
     "name": "fitfeed",
     "slug": "fitfeed",
-    "version": "1.0.1",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -13,8 +13,7 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.citricmelon.fitfeed",
-      "buildNumber": "1.0.1"
+      "bundleIdentifier": "com.citricmelon.fitfeed"
     },
     "android": {
       "adaptiveIcon": {
@@ -22,7 +21,6 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.citricmelon.fitfeed",
-      "versionCode": 2,
       "permissions": [
         "CAMERA"
       ]

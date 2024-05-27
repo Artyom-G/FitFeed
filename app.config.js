@@ -4,7 +4,7 @@ export default ({ config }) => ({
       ...config.expo,
       name: "fitfeed",
       slug: "fitfeed",
-      version: "1.0.1",
+      version: "1.1.0",
       orientation: "portrait",
       icon: "./assets/icon.png",
       userInterfaceStyle: "light",
@@ -17,7 +17,6 @@ export default ({ config }) => ({
         supportsTablet: true,
         googleServicesFile: "./GoogleService-Info.plist",
         bundleIdentifier: "com.citricmelon.fitfeed",
-        buildNumber: "1.0.1"
       },
       android: {
         adaptiveIcon: {
@@ -28,7 +27,6 @@ export default ({ config }) => ({
         permissions: [
           "CAMERA"
         ],
-        versionCode: 2,
         googleServicesFile: "./google-services.json",
       },
       web: {
