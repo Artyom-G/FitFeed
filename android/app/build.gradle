@@ -89,7 +89,7 @@ android {
         applicationId 'com.citricmelon.fitfeed'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 5
+        versionCode 6
         versionName "1.1.0"
     }
     signingConfigs {
@@ -118,6 +118,30 @@ android {
             useLegacyPackaging (findProperty('expo.useLegacyPackaging')?.toBoolean() ?: false)
         }
     }
+
+    //Added myself
+    sourceSets {
+        main {
+            // This will automatically include the right google-services.json file based on the build type
+            res.srcDirs += 'src/main/res'
+        }
+        debug {
+            res.srcDirs += 'src/debug/res'
+        }
+        release {
+            res.srcDirs += 'src/release/res'
+        }
+    }
+    flavorDimensions "default"
+    productFlavors {
+        dev {
+            applicationId "com.citricmelon.fitfeed"
+        }
+        prod {
+            applicationId "com.citricmelon.fitfeed.prod"
+        }
+    }
+
 }
 
 // Apply static values from `gradle.properties` to the `android.packagingOptions`
