@@ -45,3 +45,4 @@ GoogleService-Info.plist
 package.json
 .github
 ios-setup.txt
+.env

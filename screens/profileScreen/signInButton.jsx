@@ -15,11 +15,29 @@ function SignInButton() {
     });
 
     async function signInGoogle() {
-        // Check if your device supports Google Play
-        await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-        const { idToken } = await GoogleSignin.signIn();
-        const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-        return auth().signInWithCredential(googleCredential);
+        try {
+            // Check if your device supports Google Play
+            await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+
+            // Sign in and get the idToken
+            const userInfo = await GoogleSignin.signIn();
+            const { idToken } = userInfo;
+
+            if (!idToken) {
+                throw new Error('No idToken returned from Google Sign-In');
+            }
+
+            // Create a Google credential with the token
+            const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+            // Sign in with the credential
+            await auth().signInWithCredential(googleCredential);
+
+            console.log('Google Sign-In successful');
+        } 
+        catch (error) {
+            console.error('Error during Google Sign-In:', error);
+        }
     }
 
     return (
@@ -39,12 +57,12 @@ const styles = StyleSheet.create({
     },
     singInButton: {
         backgroundColor: globalStyles.activePrimaryColor,
-        padding: 10,            
+        padding: 10,
         borderRadius: 5,
     },
     signInButtonText: {
-        color: 'white',        
+        color: 'white',
         fontWeight: 'bold',
-        textAlign: 'right'    
+        textAlign: 'right'
     }
 });

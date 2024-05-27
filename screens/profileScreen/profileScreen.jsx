@@ -26,14 +26,9 @@ const ProfileScreen = () => {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        if(passedUser){
-            setDisplayUser(passedUser);
-        }
-        else{
-            setDisplayUser(user);
-        }
+        setDisplayUser(passedUser || user);
         setIsLoading(false);
-    }, []);
+    }, [passedUser, user]);
 
     if(!user && !passedUser){
         return(
@@ -73,7 +68,6 @@ const ProfileScreen = () => {
                         display: 'none',
                     },
                     tabBarAndroidRipple: true,
-                    tabBarPressColor: globalStyles.activePrimaryColor,
                     tabBarPressColor: globalStyles.activePrimaryColor,
                     tabBarIndicatorStyle: {
                         backgroundColor: globalStyles.activePrimaryColor,

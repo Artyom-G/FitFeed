@@ -14,17 +14,13 @@ function ProfileHeader({ passedUser }) {
 
     const { user } = useContext(Context);
     const [displayUser, setDisplayUser] = useState(passedUser);
-    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         setDisplayUser(passedUser);
-        setIsLoading(false);
-    }, []);
-
-    if(isLoading){
-        return(
-            <LoadingIndicator/>
-        )
+    }, [passedUser]);
+    
+    if (!displayUser) {
+    return <LoadingIndicator />;
     }
 
     if(displayUser){
