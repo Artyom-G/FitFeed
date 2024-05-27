@@ -39,10 +39,14 @@ private/
 public/
 .firebaserc
 firebase.json
-google-services.json
-android/app/google-services.json
 GoogleService-Info.plist
 package.json
 .github
 ios-setup.txt
 .env
+
+#Google Services
+google-services.json
+android/app/google-services.json
+android/app/src/debug/google-services.json
+android/app/src/release/google-services.json
