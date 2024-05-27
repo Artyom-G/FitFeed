@@ -23,7 +23,8 @@
       "package": "com.citricmelon.fitfeed",
       "permissions": [
         "CAMERA"
-      ]
+      ],
+      "versionCode": 2
     },
     "web": {
       "favicon": "./assets/favicon.png"
