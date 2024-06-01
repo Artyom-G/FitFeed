@@ -52,5 +52,3 @@ ios-setup.txt
 #Google Services
 google-services.json
 android/app/google-services.json
-android/app/src/debug/google-services.json
-android/app/src/release/google-services.json

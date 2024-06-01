@@ -135,10 +135,10 @@ android {
     flavorDimensions "default"
     productFlavors {
         dev {
-            applicationId "com.citricmelon.fitfeed"
+            applicationId "com.citricmelon.fitfeed.dev"
         }
         prod {
-            applicationId "com.citricmelon.fitfeed.prod"
+            applicationId "com.citricmelon.fitfeed"
         }
     }
 
