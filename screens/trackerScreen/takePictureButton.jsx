@@ -12,7 +12,7 @@ export default function TakePictureButton() {
   const cameraRef = useRef(null);
 
   const [reference, setReference] = useState(null); 
-  const { user, setUserId } = useContext(Context);
+  const { user, reloadUser } = useContext(Context);
 
   useEffect(() => {
     if(user){
@@ -71,7 +71,7 @@ export default function TakePictureButton() {
   async function acceptPicture() {
     console.log('picture taken');
     await uploadPhotoToStorage();
-
+    reloadUser();
     setPhotoUri(null); 
   }
 

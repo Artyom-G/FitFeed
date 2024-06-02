@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useLayoutEffect, useEffect } from "react";
 import { View, Text, Image, ScrollView, StyleSheet } from "react-native";
 import { PostItem } from "./postItem";
 import { useRoute } from '@react-navigation/native';
@@ -10,16 +10,27 @@ export const PostsTab = () => {
 
     const [images, setImages] = useState([]);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
+        console.log("useLayoutEffect");
         listItems();
-    }, []);
+    }, [user]);
 
     const listItems = async () => {
         try {
             const storageRef = storage().ref().child(`users/${user.uid}`);
             const res = await storageRef.listAll();
-            const urls = await Promise.all(res.items.map(item => item.getDownloadURL()));
-            setImages(urls);
+            const itemsWithMetadata = await Promise.all(res.items.map(async item => {
+                const url = await item.getDownloadURL();
+                const metadata = await item.getMetadata();
+                return {
+                    url,
+                    updated: metadata.updated
+                };
+            }));
+    
+            const sortedItems = itemsWithMetadata.sort((a, b) => new Date(b.updated) - new Date(a.updated));
+            const sortedUrls = sortedItems.map(item => item.url);
+            setImages(sortedUrls);
         } catch (err) {
             alert(err.message);
         }

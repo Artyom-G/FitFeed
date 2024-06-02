@@ -38,6 +38,12 @@ const GlobalContextProvider = ({ children }) => {
     setIsUserLoading(false);
   };
 
+  const reloadUser = () => {
+    setIsUserLoading(true);
+    setUser(user);
+    setIsUserLoading(false);
+  }
+
   const writeToDatabase = async (userInfo) => {
     try {
       await database().ref(`/users/${userInfo.uid}`).set(userInfo);
@@ -68,7 +74,7 @@ const GlobalContextProvider = ({ children }) => {
   }, []);
 
   return (
-    <Context.Provider value={{ user, userSignedIn, isUserLoading }}>
+    <Context.Provider value={{ user, userSignedIn, isUserLoading, signIn, signOut, reloadUser }}>
       {children}
     </Context.Provider>
   );
