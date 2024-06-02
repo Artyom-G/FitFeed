@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, Settings } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import LoadingIndicator from './components/loadingIndicator';
 
@@ -15,6 +15,7 @@ import TrackerScreen from './screens/trackerScreen/trackerScreen';
 
 // Context
 import GlobalContextProvider, { Context } from './components/globalContextProvider';
+import SettingsScreen from './screens/profileScreen/settingsScreen/settingsScreen';
 
 const globalStyles = require('./globalStyles.json');
 const Tab = createBottomTabNavigator();
@@ -81,6 +82,7 @@ const App = () => {
       <Stack.Navigator>
         <Stack.Screen name="Home" component={BottomNavBar} initialParams={{ user: user }} options={{ headerShown: false }} />
         <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+        <Stack.Screen name="Settings" component={SettingsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

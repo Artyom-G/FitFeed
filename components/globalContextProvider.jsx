@@ -21,13 +21,12 @@ const GlobalContextProvider = ({ children }) => {
       profilePicture: _user.photoURL,
       username: _user.email,
     };
-    setUser(userInfo);
-    setUserSignedIn(true);
     writeToDatabase(userInfo);
-    setUserLocally(userInfo);
+    readFromDatabase(_user.uid);
+    setUserLocally(user);
     console.log('Signed in as ' + _user.displayName);
     setIsUserLoading(false);
-  };
+  }
 
   const signOut = () => {
     setIsUserLoading(true);
@@ -44,9 +43,42 @@ const GlobalContextProvider = ({ children }) => {
     setIsUserLoading(false);
   }
 
+  const reloadUserPlus = () => {
+    setIsUserLoading(true);
+    readFromDatabase(user.uid);
+    setIsUserLoading(false);
+  }
+
+  const readFromDatabase = async (uid) => {
+    database().ref(`/users/${uid}`)
+      .once('value')
+      .then(snapshot => {
+        if(!snapshot.val().profile){
+          const user = {
+            ...snapshot.val(),
+            profile: {
+              name: snapshot.val().name,
+              username: snapshot.val().email,
+              title: 'Newcomer',
+              bio: 'My empty bio',
+              profilePicture: snapshot.val().profilePicture,
+            }
+          }
+          setUser(user);
+        }
+        else{
+          setUser(snapshot.val());
+        }
+      });
+  }
+
   const writeToDatabase = async (userInfo) => {
     try {
-      await database().ref(`/users/${userInfo.uid}`).set(userInfo);
+      await database().ref(`/users/${userInfo.uid}/email`).set(userInfo.email);
+      await database().ref(`/users/${userInfo.uid}/name`).set(userInfo.name);
+      await database().ref(`/users/${userInfo.uid}/profilePicture`).set(userInfo.profilePicture);
+      await database().ref(`/users/${userInfo.uid}/uid`).set(userInfo.uid);
+      await database().ref(`/users/${userInfo.uid}/username`).set(userInfo.username);
     } catch (error) {
       console.log('writeToDatabase in App.jsx Error: ', error);
     }
@@ -62,9 +94,9 @@ const GlobalContextProvider = ({ children }) => {
 
   useEffect(() => {
     const Auth = getAuth();
-    const unsubscribe = onAuthStateChanged(Auth, (_user) => {
-      if (_user) {
-        signIn(_user);
+    const unsubscribe = onAuthStateChanged(Auth, (user) => {
+      if (user) {
+        signIn(user);
       } else {
         signOut();
       }
@@ -74,7 +106,7 @@ const GlobalContextProvider = ({ children }) => {
   }, []);
 
   return (
-    <Context.Provider value={{ user, userSignedIn, isUserLoading, signIn, signOut, reloadUser }}>
+    <Context.Provider value={{ user, userSignedIn, isUserLoading, signIn, signOut, reloadUser, reloadUserPlus }}>
       {children}
     </Context.Provider>
   );

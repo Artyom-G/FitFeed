@@ -11,7 +11,6 @@ export const PostsTab = () => {
     const [images, setImages] = useState([]);
 
     useLayoutEffect(() => {
-        console.log("useLayoutEffect");
         listItems();
     }, [user]);
 

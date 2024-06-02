@@ -5,8 +5,8 @@ import { SearchUsers } from './searchUsers';
 function FeedScreen({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>Feed Screen</Text>
       <SearchUsers/>
-      <Text>Inbox Screen</Text>
     </View>
   );
 }

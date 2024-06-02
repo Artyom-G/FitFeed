@@ -3,10 +3,9 @@ import { useState, useEffect, useContext } from 'react'
 import { View, Text, Image, StyleSheet, ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import SignInButton from './signInButton';
-import SignOutButton from './singOutButton';
 import LoadingIndicator from '../../components/loadingIndicator';
 import { Context } from '../../components/globalContextProvider';
-
+import SettingsButton from './settingsButton';
 
 const globalStyles = require("../../globalStyles.json");
 
@@ -24,30 +23,58 @@ function ProfileHeader({ passedUser }) {
     }
 
     if(displayUser){
-        return(
-            <View style={styles.container}>
-                <View style={styles.profileWrapper}>
-                    <View style={styles.profileHeaderWrapper}>
-                        <Image source={{ uri: displayUser.profilePicture }} style={styles.profilePicture}></Image>
-                        <View style={styles.profileNameWrapper}>
-                            <Text style={styles.nameText}>{displayUser.name}</Text>
-                            <Text>Elite Powerlifter</Text>
-                            <View style={styles.profileMedals}>
-                                <Icon name={'star'} size={globalStyles.profileMedalIconSize} color={globalStyles.activePrimaryColor} />
-                                <Icon name={'star'} size={globalStyles.profileMedalIconSize} color={globalStyles.activePrimaryColor} />
-                                <Icon name={'star'} size={globalStyles.profileMedalIconSize} color={globalStyles.activePrimaryColor} />
-                                <Text>+5 more..</Text>
+        if(displayUser.profile){
+            return(
+                <View style={styles.container}>
+                    <View style={styles.profileWrapper}>
+                        <View style={styles.profileHeaderWrapper}>
+                            <Image source={{ uri: displayUser.profile.profilePicture }} style={styles.profilePicture}></Image>
+                            <View style={styles.profileNameWrapper}>
+                                <View style={styles.profileNameSettingsWrapper}>
+                                    <Text style={styles.nameText}>{displayUser.profile.name}</Text>
+                                    {
+                                        displayUser.uid === user.uid? <SettingsButton/> : <></>
+                                    }
+                                </View>
+                                <Text>{displayUser.profile.title}</Text>
+                                <View style={styles.profileMedals}>
+                                    <Icon name={'star'} size={globalStyles.profileMedalIconSize} color={globalStyles.activePrimaryColor} />
+                                    <Icon name={'star'} size={globalStyles.profileMedalIconSize} color={globalStyles.activePrimaryColor} />
+                                    <Icon name={'star'} size={globalStyles.profileMedalIconSize} color={globalStyles.activePrimaryColor} />
+                                    <Text>+5 more..</Text>
+                                </View>
                             </View>
                         </View>
+                        <Text>{displayUser.profile.bio}</Text>
                     </View>
-                    <Text>This Bio is very long lol</Text>
-                    <Text>Bogus Bogus Bogus</Text>
-                    {
-                        displayUser.uid === user.uid? <SignOutButton/> : <></>
-                    }
                 </View>
-            </View>
-        );
+            );
+        }
+        else{
+            return(
+                <View style={styles.container}>
+                    <View style={styles.profileWrapper}>
+                        <View style={styles.profileHeaderWrapper}>
+                            <Image source={{ uri: displayUser.profilePicture }} style={styles.profilePicture}></Image>
+                            <View style={styles.profileNameWrapper}>
+                                <View style={styles.profileNameSettingsWrapper}>
+                                    <Text style={styles.nameText}>{displayUser.name}</Text>
+                                    {
+                                        displayUser.uid === user.uid? <SettingsButton/> : <></>
+                                    }
+                                </View>
+                                <Text>Elite Powerlifter</Text>
+                                <View style={styles.profileMedals}>
+                                    <Text>No medals yet</Text>
+                                </View>
+                            </View>
+                        </View>
+                        <Text>This Bio is very long lol</Text>
+                        <Text>Bogus Bogus Bogus</Text>
+                    </View>
+                </View>
+            );
+        }
     }
     else if(!user && !displayUser){
         return(
@@ -89,6 +116,14 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         gap: 10
     },
+    profileNameSettingsWrapper:{
+        width: '90%',
+        display: 'flex',
+        flexDirection: 'row',
+        alignContent: 'center',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
     profileMedals:{
         display: 'flex',
         flexDirection: 'row',
@@ -102,7 +137,7 @@ const styles = StyleSheet.create({
     nameText: {
         color: globalStyles.activePrimaryColor,
         fontWeight: 'bold',
-        fontSize: 22,
+        fontSize: 22
     },
     singInButton: {
         backgroundColor: globalStyles.activePrimaryColor,
