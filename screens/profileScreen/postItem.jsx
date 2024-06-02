@@ -1,11 +1,24 @@
 import React from "react";
-import { View, Image, StyleSheet } from "react-native";
+import { View, Image, StyleSheet, TouchableOpacity, ToastAndroid } from "react-native";
 
 export const PostItem = ({imageUri}) => {
+
+    const onPress = () => {
+        showToastWithGravity()
+    };
+
+    const showToastWithGravity = () => {
+        ToastAndroid.showWithGravity(
+          'Post URI: \n' + imageUri,
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER,
+        );
+    };
+
     return (  
-        <View style={styles.container}>
+        <TouchableOpacity style={styles.container} onPress={() => onPress()}>
             <Image source={{ uri: imageUri }} style={styles.image} />
-        </View>
+        </TouchableOpacity>
     );
 }
 

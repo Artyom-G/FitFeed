@@ -89,7 +89,7 @@ const Timer = () => {
           ToastAndroid.SHORT,
           ToastAndroid.CENTER,
         );
-      };
+    };
     
     return(
         <View style={styles.container}>
