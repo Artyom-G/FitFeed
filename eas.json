@@ -26,6 +26,7 @@
       }
     },
     "production": {
+      "autoIncrement": true,
       "env": {
         "GOOGLE_ANDROID_CLIENT_ID": "$GOOGLE_ANDROID_CLIENT_ID",
         "GOOGLE_IOS_CLIENT_ID": "$GOOGLE_IOS_CLIENT_ID",
